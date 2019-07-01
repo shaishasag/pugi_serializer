@@ -1,23 +1,21 @@
 #ifndef __seri_h__
 #define __seri_h__
 
-#include <vector>
 #include <string>
-#include "pugixml.hpp"
 
 namespace seri
 {
-class TypeConverter
+class type_converter
 {
 public:
     virtual void write_to_string(std::string&) const = 0;
     virtual void read_from_string(std::string&) const = 0;
 };
 
-template<typename TNum> class NumConverter : public TypeConverter
+template<typename TNum> class num_onverter : public type_converter
 {
 public:
-    NumConverter(TNum& _num)
+    num_onverter(TNum& _num)
     : the_num(_num) {}
 
     void write_to_string(std::string& num_as_text) const override
@@ -68,24 +66,25 @@ public:
     TNum& the_num;
 };
 
-class Base
+class base
 {
 public:
-    virtual ~Base() {}
+    virtual ~base() {}
     virtual bool node_start(const char* node_name) = 0;
     virtual void node_end() = 0;
     virtual void text(std::string& text_value) = 0;
-    virtual void text(const TypeConverter& text_converter) = 0;
+    virtual void text(const type_converter& text_converter) = 0;
+    virtual void attrib(const char* attrib_name, std::string& attrib_value) = 0;
+    virtual void attrib(const char* attrib_name, type_converter& text_converter) = 0;
+
     template<typename TNum> void number(TNum& num_value)
     {
-        NumConverter<TNum> convert_num(num_value);
+        num_onverter<TNum> convert_num(num_value);
         text(convert_num);
     }
-    virtual void attrib(const char* attrib_name, std::string& attrib_value) = 0;
-    virtual void attrib(const char* attrib_name, TypeConverter& text_converter) = 0;
     template<typename TNum> void attrib_number(const char* attrib_name, TNum& num_value)
     {
-        NumConverter<TNum> convert_num(num_value);
+        num_onverter<TNum> convert_num(num_value);
         attrib(attrib_name, convert_num);
     }
     virtual void node_with_text(const char* node_name, std::string& text_value)
@@ -96,7 +95,7 @@ public:
             node_end();
         }
     }
-    virtual void node_with_text(const char* node_name, const TypeConverter& text_converter)
+    virtual void node_with_text(const char* node_name, const type_converter& text_converter)
     {
         if (node_start(node_name))
         {
@@ -121,97 +120,6 @@ public:
         }
     }
 protected:
-};
-
-class PugiBase : public Base
-{
-public:
-    PugiBase(pugi::xml_node parent_node)
-    {
-        node_stack.push_back(parent_node);
-    }
-    void node_end() override
-    {
-        node_stack.pop_back();
-    }
-protected:
-    std::vector<pugi::xml_node> node_stack;
-};
-
-class PugiWrite : public PugiBase
-{
-public:
-    PugiWrite(pugi::xml_node parent_node)
-    : PugiBase(parent_node) {}
-
-    bool node_start(const char* node_name) override
-    {
-        pugi::xml_node _node = node_stack.back().append_child(node_name);
-        node_stack.push_back(_node);
-        return true;
-    }
-
-    void text(std::string& text_value) override
-    {
-        node_stack.back().text().set(text_value.c_str());
-    }
-    void text(const TypeConverter& text_converter) override
-    {
-        std::string as_string;
-        text_converter.write_to_string(as_string);
-        text(as_string);
-    }
-    void attrib(const char* attrib_name, std::string& attrib_value) override
-    {
-        node_stack.back().append_attribute(attrib_name).set_value(attrib_value.c_str());
-    }
-    void attrib(const char* attrib_name, TypeConverter& text_converter) override
-    {
-        std::string as_string;
-        text_converter.write_to_string(as_string);
-        attrib(attrib_name, as_string);
-    }
-};
-
-class PugiRead : public PugiBase
-{
-public:
-    PugiRead(pugi::xml_node parent_node)
-    : PugiBase(parent_node) {}
-
-    bool node_start(const char* node_name) override
-    {
-        pugi::xml_node _node = node_stack.back().child(node_name);
-        if (_node)
-        {
-            node_stack.push_back(_node);
-        }
-        return bool(_node);
-    }
-    void text(std::string& text_value) override
-    {
-        text_value = node_stack.back().child_value();
-    }
-    void text(const TypeConverter& text_converter) override
-    {
-        std::string as_string;
-        text(as_string);
-        text_converter.read_from_string(as_string);
-    }
-    void attrib(const char* attrib_name, std::string& attrib_value) override
-    {
-        pugi::xml_attribute _attrib = node_stack.back().attribute(attrib_name);
-        if (_attrib)
-        {
-            attrib_value = _attrib.value();
-        }
-    }
-    void attrib(const char* attrib_name, TypeConverter& text_converter) override
-    {
-        std::string as_string;
-        attrib(attrib_name, as_string);
-        text_converter.read_from_string(as_string);
-    }
 };
 } // namespace seri
 #endif // __seri_h__
