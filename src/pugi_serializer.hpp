@@ -64,21 +64,38 @@ namespace pugi_serializer
         
         pugi::xml_node& curr_node() {return _curr_node;}
         
-        serilaizer_base child(const char* name);
-        serilaizer_base next_sibling(const char* name);
+        void node_name(std::string& _name);
+        
+        serilaizer_base child(const char* _name);
+        serilaizer_base next_sibling(const char* _name);
 
         void text(std::string& _text);
         void text(std::string& _text, const char* def);
-        serilaizer_base child_and_text(const char* name, std::string& _text);
-        void attribute(const char* name, std::string& _text);
-        void attribute(const char* name, std::string& _text, const char* def);
+        void text(int& _int);
+        void text(int& _int, const int def);
+        void text(unsigned& _uint);
+        void text(unsigned& _uint, const unsigned def);
+        void text(float& _float);
+        void text(float& _float, const float def);
+        void text(double& _double);
+        void text(double& _double, const double def);
+        void text(bool& _bool);
+        void text(bool& _bool, const bool def);
+        void text(long long& _llint);
+        void text(long long& _llint, const long long def);
+        void text(unsigned long long& _ullint);
+        void text(unsigned long long& _ullint, const unsigned long long def);
+
+        void attribute(const char* _name, std::string& _text);
+        void attribute(const char* _name, std::string& _text, const char* def);
         
-    protected:
+   protected:
         serilaizer_base(pugi::xml_node node, impl::impl_base& in_implementor);
 
         pugi::xml_node     _curr_node;
         impl::impl_base&   _implementor;
     };
+    
     
     class XML_SERIALIZER_CLASS writer : public serilaizer_base
     {
