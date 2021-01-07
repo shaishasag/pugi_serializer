@@ -1,9 +1,4 @@
-pugi_serializer 0.01 - a library for serialising with pugixml (https://pugixml.org/)
-
-Copyright (C) 2021, by Shai Shasag (shaishasag@yahoo.co.uk)
-
-
-This library is distributed under the MIT License:
+MIT License
 
 Copyright (c) 2021 Shai Shasag
 
