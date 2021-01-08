@@ -55,6 +55,8 @@ public:
     virtual void text(pugi::xml_node _node, long long& _llint, const long long def) = 0;
     virtual void text(pugi::xml_node _node, unsigned long long& _ullint) = 0;
     virtual void text(pugi::xml_node _node, unsigned long long& _ullint, const unsigned long long def) = 0;
+    
+    virtual void cdata(pugi::xml_node _node, std::string& _text) = 0;
 
     virtual void attribute(pugi::xml_node _node, const char* _name, std::string& _text) = 0;
     virtual void attribute(pugi::xml_node _node, const char* _name, std::string& _text, const char* default_text) = 0;
@@ -164,6 +166,10 @@ public:
     void text(pugi::xml_node _node, unsigned long long& _val, const unsigned long long def) override
         { write_node_value_with_default(_node, _val, def); }
     
+    void cdata(pugi::xml_node _node, std::string& _text) override
+    {
+        _node.append_child(pugi::node_cdata).set_value(_text.c_str());
+    }
 
     void attribute(pugi::xml_node _node, const char* _name, std::string& _text) override
     {
@@ -301,6 +307,12 @@ public:
     { _val = _node.text().as_int(); }
     void text(pugi::xml_node _node, unsigned long long& _val, const unsigned long long def) override
     { if (def != _val) text(_node, _val); }
+
+    
+    void cdata(pugi::xml_node _node, std::string& _text) override
+    {
+        _text = _node.child_value();
+    }
 
     void attribute(pugi::xml_node _node, const char* _name, std::string& _text) override
     {
@@ -495,6 +507,11 @@ void serilaizer_base::text(unsigned long long& _val)
 void serilaizer_base::text(unsigned long long& _val, const unsigned long long def)
 {
     _implementor.text(_curr_node, _val, def);
+}
+
+void serilaizer_base::cdata(std::string& _text)
+{
+    _implementor.cdata(_curr_node, _text);
 }
 
 void serilaizer_base::attribute(const char* _name, std::string& _text)

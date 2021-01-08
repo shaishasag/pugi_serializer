@@ -86,6 +86,8 @@ namespace pugi_serializer
         void text(unsigned long long& _ullint);
         void text(unsigned long long& _ullint, const unsigned long long def);
 
+        void cdata(std::string& _text);
+        
         void attribute(const char* _name, std::string& _text);
         void attribute(const char* _name, std::string& _text, const char* def);
         
