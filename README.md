@@ -28,24 +28,39 @@ void serialize_person(Person& person, pugi_serializer::serilaizer_base in_ser)
 
 void write_and_read_serialization_example()
 {
-// To write a Person object to xml_node:
+    // To write a Person object to xml_node,
+    // create pugi_serializer::writer instance and call serialize_person:
 
     Person a_person{"William", "Bill", "Ockham", 62};
     pugi::xml_document person_doc;
     pugi_serializer::writer xml_writer(person_doc, "Person_List");
     serialize_person(a_person, xml_writer);
 
-// To read a Person object from xml_node:
+    // To read a Person object from xml_node,
+    // create pugi_serializer::reader instance and call serialize_person:
 
     Person b_person;
     pugi_serializer::reader xml_reader(person_doc.document_element());
     serialize_person(b_person, xml_reader);
 
-// a_person & b_person should be the same
+    // a_person & b_person should be the same
     assert(a_person == b_person);
+
+    // output person_doc to stdout:
+    person_doc.save(std::cout, "    ");
 }
 ```
 
+The XML created by the code above will be:
+
+```xml
+<?xml version="1.0"?>
+<Person>
+    <first_name nickname="Bill">William</first_name>
+    <last_name>Ockham</last_name>
+    <age>62</age>
+</Person>
+```
 
 ## License
 Copyright (C) 2021, by Shai Shasag (shaishasag@yahoo.co.uk)

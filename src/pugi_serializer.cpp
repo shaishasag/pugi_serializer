@@ -444,47 +444,57 @@ void serilaizer_base::text(unsigned& _val)
 
 void serilaizer_base::text(unsigned& _val, const unsigned def)
 {
+    _implementor.text(_curr_node, _val, def);
 }
 
 void serilaizer_base::text(float& _val)
 {
+    _implementor.text(_curr_node, _val);
 }
 
 void serilaizer_base::text(float& _val, const float def)
 {
+    _implementor.text(_curr_node, _val, def);
 }
 
 void serilaizer_base::text(double& _val)
 {
+    _implementor.text(_curr_node, _val);
 }
 
 void serilaizer_base::text(double& _val, const double def)
 {
+    _implementor.text(_curr_node, _val, def);
 }
 
 void serilaizer_base::text(bool& _val)
 {
+    _implementor.text(_curr_node, _val);
 }
 
 void serilaizer_base::text(bool& _val, const bool def)
 {
+    _implementor.text(_curr_node, _val, def);
 }
 
 void serilaizer_base::text(long long& _val)
 {
+    _implementor.text(_curr_node, _val);
 }
 
 void serilaizer_base::text(long long& _val, const long long def)
 {
+    _implementor.text(_curr_node, _val, def);
 }
 
 void serilaizer_base::text(unsigned long long& _val)
 {
+    _implementor.text(_curr_node, _val);
 }
 
 void serilaizer_base::text(unsigned long long& _val, const unsigned long long def)
 {
-    
+    _implementor.text(_curr_node, _val, def);
 }
 
 void serilaizer_base::attribute(const char* _name, std::string& _text)
