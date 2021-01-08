@@ -90,7 +90,21 @@ namespace pugi_serializer
         
         void attribute(const char* _name, std::string& _text);
         void attribute(const char* _name, std::string& _text, const char* def);
-        
+        void attribute(const char* _name, int& _int);
+        void attribute(const char* _name, int& _int, const int def);
+        void attribute(const char* _name, unsigned& _uint);
+        void attribute(const char* _name, unsigned& _uint, const unsigned def);
+        void attribute(const char* _name, float& _float);
+        void attribute(const char* _name, float& _float, const float def);
+        void attribute(const char* _name, double& _double);
+        void attribute(const char* _name, double& _double, const double def);
+        void attribute(const char* _name, bool& _bool);
+        void attribute(const char* _name, bool& _bool, const bool def);
+        void attribute(const char* _name, long long& _llint);
+        void attribute(const char* _name, long long& _llint, const long long def);
+        void attribute(const char* _name, unsigned long long& _ullint);
+        void attribute(const char* _name, unsigned long long& _ullint, const unsigned long long def);
+
    protected:
         serilaizer_base(pugi::xml_node node, impl::impl_base& in_implementor);
 

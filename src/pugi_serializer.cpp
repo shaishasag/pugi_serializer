@@ -524,6 +524,76 @@ void serilaizer_base::attribute(const char* _name, std::string& _text, const cha
     _implementor.attribute(_curr_node, _name, _text, def);
 }
 
+void serilaizer_base::attribute(const char* _name, int& _int)
+{
+    _implementor.attribute(_curr_node, _name, _int);
+}
+
+void serilaizer_base::attribute(const char* _name, int& _int, const int def)
+{
+    _implementor.attribute(_curr_node, _name, _int, def);
+}
+
+void serilaizer_base::attribute(const char* _name, unsigned& _uint)
+{
+    _implementor.attribute(_curr_node, _name, _uint);
+}
+
+void serilaizer_base::attribute(const char* _name, unsigned& _uint, const unsigned def)
+{
+    _implementor.attribute(_curr_node, _name, _uint, def);
+}
+
+void serilaizer_base::attribute(const char* _name, float& _float)
+{
+    _implementor.attribute(_curr_node, _name, _float);
+}
+
+void serilaizer_base::attribute(const char* _name, float& _float, const float def)
+{
+    _implementor.attribute(_curr_node, _name, _float, def);
+}
+
+void serilaizer_base::attribute(const char* _name, double& _double)
+{
+    _implementor.attribute(_curr_node, _name, _double);
+}
+
+void serilaizer_base::attribute(const char* _name, double& _double, const double def)
+{
+    _implementor.attribute(_curr_node, _name, _double, def);
+}
+
+void serilaizer_base::attribute(const char* _name, bool& _bool)
+{
+    _implementor.attribute(_curr_node, _name, _bool);
+}
+
+void serilaizer_base::attribute(const char* _name, bool& _bool, const bool def)
+{
+    _implementor.attribute(_curr_node, _name, _bool, def);
+}
+
+void serilaizer_base::attribute(const char* _name, long long& _llint)
+{
+    _implementor.attribute(_curr_node, _name, _llint);
+}
+
+void serilaizer_base::attribute(const char* _name, long long& _llint, const long long def)
+{
+    _implementor.attribute(_curr_node, _name, _llint, def);
+}
+
+void serilaizer_base::attribute(const char* _name, unsigned long long& _ullint)
+{
+    _implementor.attribute(_curr_node, _name, _ullint);
+}
+
+void serilaizer_base::attribute(const char* _name, unsigned long long& _ullint, const unsigned long long def)
+{
+    _implementor.attribute(_curr_node, _name, _ullint, def);
+}
+    
 
 writer::writer(pugi::xml_document& doc, const char* doc_element_name)
 : serilaizer_base(doc.append_child(doc_element_name), *new impl::writer_impl)
