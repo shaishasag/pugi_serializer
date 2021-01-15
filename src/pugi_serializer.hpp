@@ -68,7 +68,12 @@ namespace pugi_serializer
         
         serilaizer_base child(const char* _name);
         serilaizer_base next_sibling(const char* _name);
-
+        
+        template<typename T>
+        void child_and_text(const char* _name, T& _value, const T def)
+        {
+        }
+        
         void text(std::string& _text);
         void text(std::string& _text, const char* def);
         void text(int& _int);

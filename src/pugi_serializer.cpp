@@ -276,37 +276,37 @@ public:
     void text(pugi::xml_node _node, int& _val) override
     { _val = _node.text().as_int(); }
     void text(pugi::xml_node _node, int& _val, const int def) override
-    { if (def != _val) text(_node, _val); }
-    
+    { _val = _node.text().as_int(def); }
+
     void text(pugi::xml_node _node, unsigned& _val) override
-    { _val = _node.text().as_int(); }
+    { _val = _node.text().as_uint(); }
     void text(pugi::xml_node _node, unsigned& _val, const unsigned def) override
-    { if (def != _val) text(_node, _val); }
-    
+    { _val = _node.text().as_uint(def); }
+
     void text(pugi::xml_node _node, float& _val) override
-    { _val = _node.text().as_int(); }
+    { _val = _node.text().as_float(); }
     void text(pugi::xml_node _node, float& _val, const float def) override
-    { if (def != _val) text(_node, _val); }
-    
+    { _val = _node.text().as_float(def); }
+
     void text(pugi::xml_node _node, double& _val) override
-    { _val = _node.text().as_int(); }
+    { _val = _node.text().as_double(); }
     void text(pugi::xml_node _node, double& _val, const double def) override
-    { if (def != _val) text(_node, _val); }
-    
+    { _val = _node.text().as_double(def); }
+
     void text(pugi::xml_node _node, bool& _val) override
-    { _val = _node.text().as_int(); }
+    { _val = _node.text().as_bool(); }
     void text(pugi::xml_node _node, bool& _val, const bool def) override
-    { if (def != _val) text(_node, _val); }
-    
+    { _val = _node.text().as_bool(def); }
+
     void text(pugi::xml_node _node, long long& _val) override
-    { _val = _node.text().as_int(); }
+    { _val = _node.text().as_llong(); }
     void text(pugi::xml_node _node, long long& _val, const long long def) override
-    { if (def != _val) text(_node, _val); }
-    
+    { _val = _node.text().as_llong(def); }
+
     void text(pugi::xml_node _node, unsigned long long& _val) override
-    { _val = _node.text().as_int(); }
+    { _val = _node.text().as_ullong(); }
     void text(pugi::xml_node _node, unsigned long long& _val, const unsigned long long def) override
-    { if (def != _val) text(_node, _val); }
+    { _val = _node.text().as_ullong(def); }
 
     
     void cdata(pugi::xml_node _node, std::string& _text) override
