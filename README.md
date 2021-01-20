@@ -3,7 +3,7 @@ pugi_serializer is a C++ XML serialisation library based on pugixml (https://pug
 The main feature of pugi_serializer is that the same function is used to read and write the xml.
 
 ## Example
-Here's an example of how code using pugi_serializer looks; it defines serialisation function for a class, and shows how to serialize an object to and from pugi::xml_node:
+Here's an example of how code using pugi_serializer looks; it defines serialisation function for a class, and shows how to serialize an object to and from pugi::xml_node. Note that the same function `serialize_person()` is used when writing to or reading from XML.
 
 ```c++
 class Person
@@ -28,20 +28,30 @@ void serialize_person(Person& person, pugi_serializer::serilaizer_base in_ser)
 
 void write_and_read_serialization_example()
 {
-    // To write a Person object to xml_node,
-    // create pugi_serializer::writer instance and call serialize_person:
-
+  	// Serializing to XML:
+    //
+  	// Create a Person object:
     Person a_person{"William", "Bill", "Ockham", 62};
-    pugi::xml_document person_doc;
-    pugi_serializer::writer xml_writer(person_doc, "Person_List");
-    serialize_person(a_person, xml_writer);
+    
+    // Create a pugi::xml_document to write to:
+  	pugi::xml_document person_doc;
+    
+  	// Create pugi_serializer::writer object:
+  	pugi_serializer::writer xml_writer(person_doc, "Person_List");
+    
+    // Serialize Person object to pugi::xml_document:
+  	serialize_person(a_person, xml_writer);
 
-    // To read a Person object from xml_node,
-    // create pugi_serializer::reader instance and call serialize_person:
-
+  	// Serializing from XML:
+    //
+  	// Create an empty Person object:
     Person b_person;
+  	
+  	// Create pugi_serializer::reader object and attach it to the pugi::xml_document:
     pugi_serializer::reader xml_reader(person_doc.document_element());
-    serialize_person(b_person, xml_reader);
+    
+    // Serialize Person object from pugi::xml_document:
+  	serialize_person(b_person, xml_reader);
 
     // a_person & b_person should be the same
     assert(a_person == b_person);
