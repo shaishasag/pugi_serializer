@@ -47,9 +47,9 @@
 // The xml_serializer namespace
 namespace pugi_serializer
 {
-    
+
     namespace impl { class impl_base; }
-    
+
     class XML_SERIALIZER_CLASS serilaizer_base
     {
     public:
@@ -61,19 +61,30 @@ namespace pugi_serializer
         operator bool() const { return _curr_node; }
         bool reading() const;
         bool writing() const;
-        
+        void set_should_write_default_values(const bool _should_write_default_values);
+        bool get_should_write_default_values();
+
         pugi::xml_node& curr_node() {return _curr_node;}
-        
+
         void node_name(std::string& _name);
-        
+
         serilaizer_base child(const char* _name);
         serilaizer_base next_sibling(const char* _name);
-        
+
         template<typename T>
-        void child_and_text(const char* _name, T& _value, const T def)
+        void child_and_text(const char* _child_name, T& _value, const T def)
         {
+            if (reading() || get_should_write_default_values() || _value != def)
+                child(_child_name).text(_value);
         }
-        
+
+        template<typename T>
+        void child_and_attribute(const char* _child_name, const char* _attrib_name, T& _value, const T def)
+        {
+            if (reading() || get_should_write_default_values() || _value != def)
+                child(_child_name).attribute(_attrib_name, _value);
+        }
+
         void text(std::string& _text);
         void text(std::string& _text, const char* def);
         void text(int& _int);
@@ -92,23 +103,23 @@ namespace pugi_serializer
         void text(unsigned long long& _ullint, const unsigned long long def);
 
         void cdata(std::string& _text);
-        
-        void attribute(const char* _name, std::string& _text);
-        void attribute(const char* _name, std::string& _text, const char* def);
-        void attribute(const char* _name, int& _int);
-        void attribute(const char* _name, int& _int, const int def);
-        void attribute(const char* _name, unsigned& _uint);
-        void attribute(const char* _name, unsigned& _uint, const unsigned def);
-        void attribute(const char* _name, float& _float);
-        void attribute(const char* _name, float& _float, const float def);
-        void attribute(const char* _name, double& _double);
-        void attribute(const char* _name, double& _double, const double def);
-        void attribute(const char* _name, bool& _bool);
-        void attribute(const char* _name, bool& _bool, const bool def);
-        void attribute(const char* _name, long long& _llint);
-        void attribute(const char* _name, long long& _llint, const long long def);
-        void attribute(const char* _name, unsigned long long& _ullint);
-        void attribute(const char* _name, unsigned long long& _ullint, const unsigned long long def);
+
+        void attribute(const char* _attrib_name, std::string& _text);
+        void attribute(const char* _attrib_name, std::string& _text, const char* def);
+        void attribute(const char* _attrib_name, int& _int);
+        void attribute(const char* _attrib_name, int& _int, const int def);
+        void attribute(const char* _attrib_name, unsigned& _uint);
+        void attribute(const char* _attrib_name, unsigned& _uint, const unsigned def);
+        void attribute(const char* _attrib_name, float& _float);
+        void attribute(const char* _attrib_name, float& _float, const float def);
+        void attribute(const char* _attrib_name, double& _double);
+        void attribute(const char* _attrib_name, double& _double, const double def);
+        void attribute(const char* _attrib_name, bool& _bool);
+        void attribute(const char* _attrib_name, bool& _bool, const bool def);
+        void attribute(const char* _attrib_name, long long& _llint);
+        void attribute(const char* _attrib_name, long long& _llint, const long long def);
+        void attribute(const char* _attrib_name, unsigned long long& _ullint);
+        void attribute(const char* _attrib_name, unsigned long long& _ullint, const unsigned long long def);
 
    protected:
         serilaizer_base(pugi::xml_node node, impl::impl_base& in_implementor);
@@ -116,8 +127,8 @@ namespace pugi_serializer
         pugi::xml_node     _curr_node;
         impl::impl_base&   _implementor;
     };
-    
-    
+
+
     class XML_SERIALIZER_CLASS writer : public serilaizer_base
     {
     public:
@@ -125,7 +136,7 @@ namespace pugi_serializer
         writer(pugi::xml_node node);
         ~writer();
     };
-    
+
     class XML_SERIALIZER_CLASS reader : public serilaizer_base
     {
     public:
@@ -133,13 +144,14 @@ namespace pugi_serializer
         reader(pugi::xml_node node);
         ~reader();
     };
-    
+
     class serialized_base
     {
     public:
         virtual void serialize(pugi_serializer::serilaizer_base ser) = 0;
     };
 
+    // serialize an array of objects derived from pugi_serializer::serialized_base
     template<typename T_ITEM>
     void serialize_array(pugi_serializer::serilaizer_base& ser, T_ITEM* array_begin, T_ITEM* array_end, const char* container_item_name)
     {
@@ -163,6 +175,7 @@ namespace pugi_serializer
         }
     }
 
+    // serialize a container of objects derived from pugi_serializer::serialized_base
     template<typename TCONTAINER>
     void serialize_container(pugi_serializer::serilaizer_base& ser, TCONTAINER& in_container, const char* container_item_name)
     {

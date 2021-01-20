@@ -34,7 +34,9 @@ public:
 
     bool reading() const { return _reading;}
     bool writing() const { return !_reading;}
-    
+    void set_should_write_default_values(const bool _should_write_default_values) { _write_default_values = _should_write_default_values; }
+    bool get_should_write_default_values() {return _write_default_values;}
+
     virtual void node_name(pugi::xml_node _node, std::string& _name) = 0;
     virtual pugi::xml_node child(pugi::xml_node _node, const char* _name) = 0;
     virtual pugi::xml_node next_sibling(pugi::xml_node _node, const char* _name) = 0;
@@ -58,25 +60,26 @@ public:
     
     virtual void cdata(pugi::xml_node _node, std::string& _text) = 0;
 
-    virtual void attribute(pugi::xml_node _node, const char* _name, std::string& _text) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, std::string& _text, const char* default_text) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, int& _int) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, int& _int, const int def) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, unsigned& _uint) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, unsigned& _uint, const unsigned def) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, float& _float) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, float& _float, const float def) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, double& _double) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, double& _double, const double def) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, bool& _bool) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, bool& _bool, const bool def) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, long long& _llint) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, long long& _llint, const long long def) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, unsigned long long& _ullint) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _name, unsigned long long& _ullint, const unsigned long long def) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, const char* default_text) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, int& _int) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, int& _int, const int def) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned& _uint) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned& _uint, const unsigned def) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, float& _float) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, float& _float, const float def) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, double& _double) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, double& _double, const double def) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, bool& _bool) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, bool& _bool, const bool def) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, long long& _llint) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, long long& _llint, const long long def) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned long long& _ullint) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned long long& _ullint, const unsigned long long def) = 0;
 
 protected:
     bool _reading = true;
+    bool _write_default_values = true;
 };
 
 class writer_impl : public impl_base
@@ -127,7 +130,7 @@ public:
     template<typename TToWrite>
     void write_node_value_with_default(pugi::xml_node _node, TToWrite& _val, const TToWrite def)
     {
-        if (def != _val)
+        if (_write_default_values || def != _val)
             write_node_value(_node, _val);
     }
 
@@ -171,68 +174,69 @@ public:
         _node.append_child(pugi::node_cdata).set_value(_text.c_str());
     }
 
-    void attribute(pugi::xml_node _node, const char* _name, std::string& _text) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text) override
     {
-        _node.append_attribute(_name) = _text.c_str();
+        _node.append_attribute(_attrib_name) = _text.c_str();
     }
     
     // do not append the attribute if _text is equal to default_text
-    void attribute(pugi::xml_node _node, const char* _name, std::string& _text, const char* default_text) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, const char* default_text) override
     {
-        if (_text != default_text)
-            _node.append_attribute(_name) = _text.c_str();
+        if (_write_default_values || _text != default_text)
+            _node.append_attribute(_attrib_name) = _text.c_str();
     }
     
     template<typename TToWrite>
-    void write_attribute_value(pugi::xml_node _node, const char* _name, TToWrite& _to_write)
+    void write_attribute_value(pugi::xml_node _node, const char* _attrib_name, TToWrite& _to_write)
     {
-        _node.append_attribute(_name).set_value(_to_write);
+        _node.append_attribute(_attrib_name).set_value(_to_write);
     }
     
     template<typename TToWrite>
-    void write_attribute_value_with_default(pugi::xml_node _node, const char* _name, TToWrite& _to_write, const TToWrite def)
+    void write_attribute_value_with_default(pugi::xml_node _node, const char* _attrib_name, TToWrite& _to_write, const TToWrite def)
     // do not write the value if it's equal to the default
     {
-        if (_to_write != def)
+        if (_write_default_values || _to_write != def)
         {
-            write_attribute_value(_node, _name, _to_write);
+            write_attribute_value(_node, _attrib_name, _to_write);
         }
     }
 
-    void attribute(pugi::xml_node _node, const char* _name, int& _val) override
-        { write_attribute_value(_node, _name, _val); }
-    void attribute(pugi::xml_node _node, const char* _name, int& _val, const int def) override
-    { write_attribute_value_with_default(_node, _name, _val, def); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, int& _val) override
+        { write_attribute_value(_node, _attrib_name, _val); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, int& _val, const int def) override
+        { write_attribute_value_with_default(_node, _attrib_name, _val, def); }
     
-    void attribute(pugi::xml_node _node, const char* _name, unsigned& _val) override
-        { write_attribute_value(_node, _name, _val); }
-    void attribute(pugi::xml_node _node, const char* _name, unsigned& _val, const unsigned def) override
-        { write_attribute_value_with_default(_node, _name, _val, def); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned& _val) override
+        { write_attribute_value(_node, _attrib_name, _val); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned& _val, const unsigned def) override
+        { write_attribute_value_with_default(_node, _attrib_name, _val, def); }
     
-    void attribute(pugi::xml_node _node, const char* _name, float& _val) override
-        { write_attribute_value(_node, _name, _val); }
-    void attribute(pugi::xml_node _node, const char* _name, float& _val, const float def) override
-        { write_attribute_value_with_default(_node, _name, _val, def); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, float& _val) override
+        { write_attribute_value(_node, _attrib_name, _val); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, float& _val, const float def) override
+        { write_attribute_value_with_default(_node, _attrib_name, _val, def); }
     
-    void attribute(pugi::xml_node _node, const char* _name, double& _val) override
-        { write_attribute_value(_node, _name, _val); }
-    void attribute(pugi::xml_node _node, const char* _name, double& _val, const double def) override
-        { write_attribute_value_with_default(_node, _name, _val, def); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, double& _val) override
+        { write_attribute_value(_node, _attrib_name, _val); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, double& _val, const double def) override
+        { write_attribute_value_with_default(_node, _attrib_name, _val, def); }
     
-    void attribute(pugi::xml_node _node, const char* _name, bool& _val) override
-        { write_attribute_value(_node, _name, _val); }
-    void attribute(pugi::xml_node _node, const char* _name, bool& _val, const bool def) override
-        { write_attribute_value_with_default(_node, _name, _val, def); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, bool& _val) override
+        { write_attribute_value(_node, _attrib_name, _val); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, bool& _val, const bool def) override
+        { write_attribute_value_with_default(_node, _attrib_name, _val, def); }
     
-    void attribute(pugi::xml_node _node, const char* _name, long long& _val) override
-        { write_attribute_value(_node, _name, _val); }
-    void attribute(pugi::xml_node _node, const char* _name, long long& _val, const long long def) override
-        { write_attribute_value_with_default(_node, _name, _val, def); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, long long& _val) override
+        { write_attribute_value(_node, _attrib_name, _val); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, long long& _val, const long long def) override
+        { write_attribute_value_with_default(_node, _attrib_name, _val, def); }
     
-    void attribute(pugi::xml_node _node, const char* _name, unsigned long long& _val) override
-        { write_attribute_value(_node, _name, _val); }
-    void attribute(pugi::xml_node _node, const char* _name, unsigned long long& _val, const unsigned long long def) override
-        { write_attribute_value_with_default(_node, _name, _val, def); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned long long& _val) override
+        { write_attribute_value(_node, _attrib_name, _val); }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned long long& _val, const unsigned long long def) override
+        { write_attribute_value_with_default(_node, _attrib_name, _val, def); }
+
 };
 
 class reader_impl : public impl_base
@@ -314,81 +318,81 @@ public:
         _text = _node.child_value();
     }
 
-    void attribute(pugi::xml_node _node, const char* _name, std::string& _text) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text) override
     {
-        _text = _node.attribute(_name).as_string(_text.c_str());
+        _text = _node.attribute(_attrib_name).as_string(_text.c_str());
     }
     
     // return default_text if attribute does not exists
-    void attribute(pugi::xml_node _node, const char* _name, std::string& _text, const char* default_text) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, const char* default_text) override
     {
-        if (auto attrib = _node.attribute(_name); attrib)
+        if (auto attrib = _node.attribute(_attrib_name); attrib)
             _text = attrib.as_string(_text.c_str());
         else
             _text = default_text;
     }
     
-    void attribute(pugi::xml_node _node, const char* _name, int& _int) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, int& _int) override
     {
-        _int = _node.attribute(_name).as_int(_int);
+        _int = _node.attribute(_attrib_name).as_int(_int);
     }
-    void attribute(pugi::xml_node _node, const char* _name, int& _int, const int def) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, int& _int, const int def) override
     {
-        _int = _node.attribute(_name).as_int(def);
-    }
-    
-    void attribute(pugi::xml_node _node, const char* _name, unsigned& _uint) override
-    {
-        _uint = _node.attribute(_name).as_uint(_uint);
-    }
-    void attribute(pugi::xml_node _node, const char* _name, unsigned& _uint, const unsigned def) override
-    {
-        _uint = _node.attribute(_name).as_uint(def);
+        _int = _node.attribute(_attrib_name).as_int(def);
     }
     
-    void attribute(pugi::xml_node _node, const char* _name, float& _float) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned& _uint) override
     {
-        _float = _node.attribute(_name).as_float(_float);
+        _uint = _node.attribute(_attrib_name).as_uint(_uint);
     }
-    void attribute(pugi::xml_node _node, const char* _name, float& _float, const float def) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned& _uint, const unsigned def) override
     {
-        _float = _node.attribute(_name).as_float(def);
-    }
-    
-    void attribute(pugi::xml_node _node, const char* _name, double& _double) override
-    {
-        _double = _node.attribute(_name).as_double(_double);
-    }
-    void attribute(pugi::xml_node _node, const char* _name, double& _double, const double def) override
-    {
-        _double = _node.attribute(_name).as_double(def);
+        _uint = _node.attribute(_attrib_name).as_uint(def);
     }
     
-    void attribute(pugi::xml_node _node, const char* _name, bool& _bool) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, float& _float) override
     {
-        _bool = _node.attribute(_name).as_bool(_bool);
+        _float = _node.attribute(_attrib_name).as_float(_float);
     }
-    void attribute(pugi::xml_node _node, const char* _name, bool& _bool, const bool def) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, float& _float, const float def) override
     {
-        _bool = _node.attribute(_name).as_bool(def);
-    }
-    
-    void attribute(pugi::xml_node _node, const char* _name, long long& _llint) override
-    {
-        _llint = _node.attribute(_name).as_llong(_llint);
-    }
-    void attribute(pugi::xml_node _node, const char* _name, long long& _llint, const long long def) override
-    {
-        _llint = _node.attribute(_name).as_llong(def);
+        _float = _node.attribute(_attrib_name).as_float(def);
     }
     
-    void attribute(pugi::xml_node _node, const char* _name, unsigned long long& _ullint) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, double& _double) override
     {
-        _ullint = _node.attribute(_name).as_ullong(_ullint);
+        _double = _node.attribute(_attrib_name).as_double(_double);
     }
-    void attribute(pugi::xml_node _node, const char* _name, unsigned long long& _ullint, const unsigned long long def) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, double& _double, const double def) override
     {
-        _ullint = _node.attribute(_name).as_ullong(def);
+        _double = _node.attribute(_attrib_name).as_double(def);
+    }
+    
+    void attribute(pugi::xml_node _node, const char* _attrib_name, bool& _bool) override
+    {
+        _bool = _node.attribute(_attrib_name).as_bool(_bool);
+    }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, bool& _bool, const bool def) override
+    {
+        _bool = _node.attribute(_attrib_name).as_bool(def);
+    }
+    
+    void attribute(pugi::xml_node _node, const char* _attrib_name, long long& _llint) override
+    {
+        _llint = _node.attribute(_attrib_name).as_llong(_llint);
+    }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, long long& _llint, const long long def) override
+    {
+        _llint = _node.attribute(_attrib_name).as_llong(def);
+    }
+    
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned long long& _ullint) override
+    {
+        _ullint = _node.attribute(_attrib_name).as_ullong(_ullint);
+    }
+    void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned long long& _ullint, const unsigned long long def) override
+    {
+        _ullint = _node.attribute(_attrib_name).as_ullong(def);
     }
 };
 } // namespace impl
@@ -412,8 +416,18 @@ serilaizer_base& serilaizer_base::operator=(const serilaizer_base& other)
 
 bool serilaizer_base::reading() const { return _implementor.reading();}
 bool serilaizer_base::writing() const { return _implementor.writing();}
- 
-void serilaizer_base::node_name(std::string& _name)
+
+void serilaizer_base::set_should_write_default_values(const bool _should_write_default_values)
+{
+    _implementor.set_should_write_default_values(_should_write_default_values);
+}
+    
+bool serilaizer_base::get_should_write_default_values()
+{
+    return _implementor.get_should_write_default_values();
+}
+
+void serilaizer_base::serilaizer_base::node_name(std::string& _name)
 {
     _implementor.node_name(_curr_node, _name);
 }
