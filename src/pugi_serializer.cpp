@@ -10,8 +10,9 @@
  * Copyright (C) 2006, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
  */
 
-#ifndef SOURCE_PUGI_SERIALIZER_CPP
-#define SOURCE_PUGI_SERIALIZER_CPP
+
+#ifndef __SOURCE_PUGI_SERIALIZER_CPP__
+#define __SOURCE_PUGI_SERIALIZER_CPP__
 
 #include "pugi_serializer.hpp"
 
@@ -41,6 +42,7 @@ public:
     virtual pugi::xml_node child(pugi::xml_node _node, const char* _name) = 0;
     virtual pugi::xml_node next_sibling(pugi::xml_node _node, const char* _name) = 0;
 
+    virtual const char* c_str(pugi::xml_node _node, const char* _c_str) = 0;
     virtual void text(pugi::xml_node _node, std::string& _text) = 0;
     virtual void text(pugi::xml_node _node, std::string& _text, const char* default_text) = 0;
     virtual void text(pugi::xml_node _node, int& _int) = 0;
@@ -121,6 +123,12 @@ public:
         }
     }
     
+    const char* c_str(pugi::xml_node _node, const char* _c_str) override
+    {
+        _node.text().set(_c_str);
+        return _c_str;
+    }
+
     template<typename TToWrite>
     void write_node_value(pugi::xml_node _node, TToWrite& _val)
     {
@@ -258,6 +266,11 @@ public:
     {
         auto younger_sibling = older_sibling.next_sibling(_name);
         return younger_sibling;
+    }
+    
+    const char* c_str(pugi::xml_node _node, const char*) override
+    {
+        return _node.text().as_string();
     }
 
     void text(pugi::xml_node _node, std::string& _text) override
@@ -442,6 +455,11 @@ serializer_base serializer_base::next_sibling(const char* _name)
 {
     pugi::xml_node a_node = _implementor.next_sibling(_curr_node, _name);
     return serializer_base(a_node, _implementor);
+}
+
+const char* serializer_base::c_str(const char* _c_str)
+{
+    return _implementor.c_str(_curr_node, _c_str);
 }
 
 void serializer_base::text(std::string& _text)
@@ -638,7 +656,7 @@ reader::~reader()
 
 }  // namespace pugi_serializer
 
-#endif // SOURCE_PUGI_SERIALIZER_CPP
+#endif // __SOURCE_PUGI_SERIALIZER_CPP__
 
 /**
  * Copyright (C) 2021, by Shai Shsag (shaishasag@yahoo.co.uk)

@@ -10,8 +10,8 @@
  * Copyright (C) 2006, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
  */
 
-#ifndef HEADER_XML_SERIALIZER_HPP
-#define HEADER_XML_SERIALIZER_HPP
+#ifndef __HEADER_PUGI_SERIALIZER_HPP__
+#define __HEADER_PUGI_SERIALIZER_HPP__
 
 /* Copy to include
 #include "pugi_serializer.hpp"
@@ -43,7 +43,6 @@
 #	define XML_SERIALIZER_FUNCTION XML_SERIALIZER_API
 #endif
 
-
 // The xml_serializer namespace
 namespace pugi_serializer
 {
@@ -53,6 +52,7 @@ namespace pugi_serializer
     class XML_SERIALIZER_CLASS serializer_base
     {
     public:
+
         serializer_base(const serializer_base&) = default;
         serializer_base& operator=(const serializer_base&);
         serializer_base(serializer_base&&) = default;
@@ -85,6 +85,7 @@ namespace pugi_serializer
                 child(_child_name).attribute(_attrib_name, _value);
         }
 
+        const char* c_str(const char* _c_str);
         void text(std::string& _text);
         void text(std::string& _text, const char* def);
         void text(int& _int);
@@ -200,7 +201,8 @@ namespace pugi_serializer
     }
 }
 
-#endif
+
+#endif  // __HEADER_PUGI_SERIALIZER_HPP__
 
 #if 0  // TBD
 // Make sure implementation is included in header-only mode
