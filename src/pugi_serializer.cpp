@@ -397,12 +397,12 @@ public:
 };
 } // namespace impl
 
-serilaizer_base::serilaizer_base(pugi::xml_node in_node, impl::impl_base& in_implementor)
+serializer_base::serializer_base(pugi::xml_node in_node, impl::impl_base& in_implementor)
 : _curr_node(in_node)
 , _implementor(in_implementor)
 {}
     
-serilaizer_base& serilaizer_base::operator=(const serilaizer_base& other)
+serializer_base& serializer_base::operator=(const serializer_base& other)
 {
     if (this != & other)
     {
@@ -414,209 +414,210 @@ serilaizer_base& serilaizer_base::operator=(const serilaizer_base& other)
 }
 
 
-bool serilaizer_base::reading() const { return _implementor.reading();}
-bool serilaizer_base::writing() const { return _implementor.writing();}
+bool serializer_base::reading() const { return _implementor.reading();}
+bool serializer_base::writing() const { return _implementor.writing();}
 
-void serilaizer_base::set_should_write_default_values(const bool _should_write_default_values)
+void serializer_base::set_should_write_default_values(const bool _should_write_default_values)
 {
     _implementor.set_should_write_default_values(_should_write_default_values);
 }
     
-bool serilaizer_base::get_should_write_default_values()
+bool serializer_base::get_should_write_default_values()
 {
     return _implementor.get_should_write_default_values();
 }
 
-void serilaizer_base::serilaizer_base::node_name(std::string& _name)
+void serializer_base::serializer_base::node_name(std::string& _name)
 {
     _implementor.node_name(_curr_node, _name);
 }
 
-serilaizer_base serilaizer_base::child(const char* _name)
+serializer_base serializer_base::child(const char* _name)
 {
     pugi::xml_node a_node = _implementor.child(_curr_node, _name);
-    return serilaizer_base(a_node, _implementor);
+    return serializer_base(a_node, _implementor);
 }
 
-serilaizer_base serilaizer_base::next_sibling(const char* _name)
+serializer_base serializer_base::next_sibling(const char* _name)
 {
     pugi::xml_node a_node = _implementor.next_sibling(_curr_node, _name);
-    return serilaizer_base(a_node, _implementor);
+    return serializer_base(a_node, _implementor);
 }
 
-void serilaizer_base::text(std::string& _text)
+void serializer_base::text(std::string& _text)
 {
     _implementor.text(_curr_node, _text);
 }
 
-void serilaizer_base::text(std::string& _text, const char* default_text)
+void serializer_base::text(std::string& _text, const char* default_text)
 {
     _implementor.text(_curr_node, _text, default_text);
 }
     
-void serilaizer_base::text(int& _val)
+void serializer_base::text(int& _val)
 {
     _implementor.text(_curr_node, _val);
 }
 
-void serilaizer_base::text(int& _val, const int def)
-{
-}
-
-void serilaizer_base::text(unsigned& _val)
-{
-    _implementor.text(_curr_node, _val);
-}
-
-void serilaizer_base::text(unsigned& _val, const unsigned def)
+void serializer_base::text(int& _val, const int def)
 {
     _implementor.text(_curr_node, _val, def);
 }
 
-void serilaizer_base::text(float& _val)
+void serializer_base::text(unsigned& _val)
 {
     _implementor.text(_curr_node, _val);
 }
 
-void serilaizer_base::text(float& _val, const float def)
+void serializer_base::text(unsigned& _val, const unsigned def)
 {
     _implementor.text(_curr_node, _val, def);
 }
 
-void serilaizer_base::text(double& _val)
+void serializer_base::text(float& _val)
 {
     _implementor.text(_curr_node, _val);
 }
 
-void serilaizer_base::text(double& _val, const double def)
+void serializer_base::text(float& _val, const float def)
 {
     _implementor.text(_curr_node, _val, def);
 }
 
-void serilaizer_base::text(bool& _val)
+void serializer_base::text(double& _val)
 {
     _implementor.text(_curr_node, _val);
 }
 
-void serilaizer_base::text(bool& _val, const bool def)
+void serializer_base::text(double& _val, const double def)
 {
     _implementor.text(_curr_node, _val, def);
 }
 
-void serilaizer_base::text(long long& _val)
+void serializer_base::text(bool& _val)
 {
     _implementor.text(_curr_node, _val);
 }
 
-void serilaizer_base::text(long long& _val, const long long def)
+void serializer_base::text(bool& _val, const bool def)
 {
     _implementor.text(_curr_node, _val, def);
 }
 
-void serilaizer_base::text(unsigned long long& _val)
+void serializer_base::text(long long& _val)
 {
     _implementor.text(_curr_node, _val);
 }
 
-void serilaizer_base::text(unsigned long long& _val, const unsigned long long def)
+void serializer_base::text(long long& _val, const long long def)
 {
     _implementor.text(_curr_node, _val, def);
 }
 
-void serilaizer_base::cdata(std::string& _text)
+void serializer_base::text(unsigned long long& _val)
+{
+    _implementor.text(_curr_node, _val);
+}
+
+void serializer_base::text(unsigned long long& _val, const unsigned long long def)
+{
+    _implementor.text(_curr_node, _val, def);
+}
+
+void serializer_base::cdata(std::string& _text)
 {
     _implementor.cdata(_curr_node, _text);
 }
 
-void serilaizer_base::attribute(const char* _name, std::string& _text)
+void serializer_base::attribute(const char* _name, std::string& _text)
 {
     _implementor.attribute(_curr_node, _name, _text);
 }
 
-void serilaizer_base::attribute(const char* _name, std::string& _text, const char* def)
+void serializer_base::attribute(const char* _name, std::string& _text, const char* def)
 {
     _implementor.attribute(_curr_node, _name, _text, def);
 }
 
-void serilaizer_base::attribute(const char* _name, int& _int)
+void serializer_base::attribute(const char* _name, int& _int)
 {
     _implementor.attribute(_curr_node, _name, _int);
 }
 
-void serilaizer_base::attribute(const char* _name, int& _int, const int def)
+void serializer_base::attribute(const char* _name, int& _int, const int def)
 {
     _implementor.attribute(_curr_node, _name, _int, def);
 }
 
-void serilaizer_base::attribute(const char* _name, unsigned& _uint)
+void serializer_base::attribute(const char* _name, unsigned& _uint)
 {
     _implementor.attribute(_curr_node, _name, _uint);
 }
 
-void serilaizer_base::attribute(const char* _name, unsigned& _uint, const unsigned def)
+void serializer_base::attribute(const char* _name, unsigned& _uint, const unsigned def)
 {
     _implementor.attribute(_curr_node, _name, _uint, def);
 }
 
-void serilaizer_base::attribute(const char* _name, float& _float)
+void serializer_base::attribute(const char* _name, float& _float)
 {
     _implementor.attribute(_curr_node, _name, _float);
 }
 
-void serilaizer_base::attribute(const char* _name, float& _float, const float def)
+void serializer_base::attribute(const char* _name, float& _float, const float def)
 {
     _implementor.attribute(_curr_node, _name, _float, def);
 }
 
-void serilaizer_base::attribute(const char* _name, double& _double)
+void serializer_base::attribute(const char* _name, double& _double)
 {
     _implementor.attribute(_curr_node, _name, _double);
 }
 
-void serilaizer_base::attribute(const char* _name, double& _double, const double def)
+void serializer_base::attribute(const char* _name, double& _double, const double def)
 {
     _implementor.attribute(_curr_node, _name, _double, def);
 }
 
-void serilaizer_base::attribute(const char* _name, bool& _bool)
+void serializer_base::attribute(const char* _name, bool& _bool)
 {
     _implementor.attribute(_curr_node, _name, _bool);
 }
 
-void serilaizer_base::attribute(const char* _name, bool& _bool, const bool def)
+void serializer_base::attribute(const char* _name, bool& _bool, const bool def)
 {
     _implementor.attribute(_curr_node, _name, _bool, def);
 }
 
-void serilaizer_base::attribute(const char* _name, long long& _llint)
+void serializer_base::attribute(const char* _name, long long& _llint)
 {
     _implementor.attribute(_curr_node, _name, _llint);
 }
 
-void serilaizer_base::attribute(const char* _name, long long& _llint, const long long def)
+void serializer_base::attribute(const char* _name, long long& _llint, const long long def)
 {
     _implementor.attribute(_curr_node, _name, _llint, def);
 }
 
-void serilaizer_base::attribute(const char* _name, unsigned long long& _ullint)
+void serializer_base::attribute(const char* _name, unsigned long long& _ullint)
 {
     _implementor.attribute(_curr_node, _name, _ullint);
 }
 
-void serilaizer_base::attribute(const char* _name, unsigned long long& _ullint, const unsigned long long def)
+void serializer_base::attribute(const char* _name, unsigned long long& _ullint, const unsigned long long def)
 {
     _implementor.attribute(_curr_node, _name, _ullint, def);
 }
     
 
 writer::writer(pugi::xml_document& doc, const char* doc_element_name)
-: serilaizer_base(doc.append_child(doc_element_name), *new impl::writer_impl)
+: serializer_base(doc.append_child(doc_element_name), *new impl::writer_impl)
 {
     
 }
 
 writer::writer(pugi::xml_node in_node)
-: serilaizer_base(in_node, *new impl::writer_impl)
+: serializer_base(in_node, *new impl::writer_impl)
 {}
 
 writer::~writer()
@@ -625,10 +626,10 @@ writer::~writer()
 }
 
 reader::reader(pugi::xml_document& doc)
-: serilaizer_base(doc.document_element(), *new impl::reader_impl) {}
+: serializer_base(doc.document_element(), *new impl::reader_impl) {}
 
 reader::reader(pugi::xml_node in_node)
-: serilaizer_base(in_node, *new impl::reader_impl) {}
+: serializer_base(in_node, *new impl::reader_impl) {}
 
 reader::~reader()
 {

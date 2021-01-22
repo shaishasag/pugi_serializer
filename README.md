@@ -16,7 +16,7 @@ public:
 };
 
 // this functions defines how a Person object will be serialized from/to pugi::xml_node:
-void serialize_person(Person& person, pugi_serializer::serilaizer_base in_ser)
+void serialize_person(Person& person, pugi_serializer::serializer_base in_ser)
 {
     auto name_ser = in_ser.child("first_name");
     name_ser.text(person.m_first_name);
@@ -97,13 +97,13 @@ name_ser.attribute("nickname", person.m_nickname, "");
 When writting to XML the default is to always write the element/attribute even if the value being written is equal to the default value. This might not always be the desired result. Sometimes it would be preferable to avoid writing default value in order to reduce XML size, or to allow the reading code to decide the value for non-existing elements/attributes. Do do achieve that call
 
 ```
-serilaizer_base::set_should_write_default_values(false);
+serializer_base::set_should_write_default_values(false);
 ```
 
 Here is an implementation of the serialize_person() function from the example above, where default values are read but not written:
 
 ```c++
-void serialize_person(Person& person, pugi_serializer::serilaizer_base in_ser)
+void serialize_person(Person& person, pugi_serializer::serializer_base in_ser)
 {
     in_ser.set_should_write_default_values(false);
     auto name_ser = in_ser.child("first_name");

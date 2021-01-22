@@ -50,13 +50,13 @@ namespace pugi_serializer
 
     namespace impl { class impl_base; }
 
-    class XML_SERIALIZER_CLASS serilaizer_base
+    class XML_SERIALIZER_CLASS serializer_base
     {
     public:
-        serilaizer_base(const serilaizer_base&) = default;
-        serilaizer_base& operator=(const serilaizer_base&);
-        serilaizer_base(serilaizer_base&&) = default;
-        serilaizer_base& operator=(serilaizer_base&&) = default;
+        serializer_base(const serializer_base&) = default;
+        serializer_base& operator=(const serializer_base&);
+        serializer_base(serializer_base&&) = default;
+        serializer_base& operator=(serializer_base&&) = default;
 
         operator bool() const { return _curr_node; }
         bool reading() const;
@@ -68,8 +68,8 @@ namespace pugi_serializer
 
         void node_name(std::string& _name);
 
-        serilaizer_base child(const char* _name);
-        serilaizer_base next_sibling(const char* _name);
+        serializer_base child(const char* _name);
+        serializer_base next_sibling(const char* _name);
 
         template<typename T>
         void child_and_text(const char* _child_name, T& _value, const T def)
@@ -122,14 +122,14 @@ namespace pugi_serializer
         void attribute(const char* _attrib_name, unsigned long long& _ullint, const unsigned long long def);
 
    protected:
-        serilaizer_base(pugi::xml_node node, impl::impl_base& in_implementor);
+        serializer_base(pugi::xml_node node, impl::impl_base& in_implementor);
 
         pugi::xml_node     _curr_node;
         impl::impl_base&   _implementor;
     };
 
 
-    class XML_SERIALIZER_CLASS writer : public serilaizer_base
+    class XML_SERIALIZER_CLASS writer : public serializer_base
     {
     public:
         writer(pugi::xml_document& doc, const char* doc_element_name);
@@ -137,7 +137,7 @@ namespace pugi_serializer
         ~writer();
     };
 
-    class XML_SERIALIZER_CLASS reader : public serilaizer_base
+    class XML_SERIALIZER_CLASS reader : public serializer_base
     {
     public:
         reader(pugi::xml_document& doc);
@@ -148,12 +148,13 @@ namespace pugi_serializer
     class serialized_base
     {
     public:
-        virtual void serialize(pugi_serializer::serilaizer_base ser) = 0;
+        virtual ~serialized_base() = default;
+        virtual void serialize(pugi_serializer::serializer_base ser) = 0;
     };
 
     // serialize an array of objects derived from pugi_serializer::serialized_base
     template<typename T_ITEM>
-    void serialize_array(pugi_serializer::serilaizer_base& ser, T_ITEM* array_begin, T_ITEM* array_end, const char* container_item_name)
+    void serialize_array(pugi_serializer::serializer_base& ser, T_ITEM* array_begin, T_ITEM* array_end, const char* container_item_name)
     {
         if (ser.reading())
         {
@@ -177,7 +178,7 @@ namespace pugi_serializer
 
     // serialize a container of objects derived from pugi_serializer::serialized_base
     template<typename TCONTAINER>
-    void serialize_container(pugi_serializer::serilaizer_base& ser, TCONTAINER& in_container, const char* container_item_name)
+    void serialize_container(pugi_serializer::serializer_base& ser, TCONTAINER& in_container, const char* container_item_name)
     {
         if (ser.reading())
         {
