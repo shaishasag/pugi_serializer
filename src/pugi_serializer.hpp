@@ -86,6 +86,15 @@ namespace pugi_serializer
         }
 
         const char* c_str(const char* _c_str);
+        
+        template<typename TSTR>  // serialize any type of string assuming TSTR has two functons:
+        // TSTR.c_str() - returning null terminated char*
+        // TSTR.c_str.operator=(const char*)
+        void serialize_string(TSTR& in_out_string)
+        {
+            in_out_string = c_str(in_out_string.c_str());
+        }
+ 
         void text(std::string& _text);
         void text(std::string& _text, const char* def);
         void text(int& _int);
@@ -152,7 +161,29 @@ namespace pugi_serializer
         virtual ~serialized_base() = default;
         virtual void serialize(pugi_serializer::serializer_base ser) = 0;
     };
-
+    
+    // serialize an array of string objects
+    template<typename TSTR>
+    void serialize_string_array(pugi_serializer::serializer_base& ser, TSTR* array_begin, TSTR* array_end, const char* container_item_name)
+    {
+        if (ser.reading())
+        {
+            TSTR* curr_item = array_begin;
+            for (auto item_ser = ser.child(container_item_name); item_ser && curr_item != array_end; item_ser = item_ser.next_sibling(container_item_name), ++curr_item)
+            {
+                item_ser.serialize_string(*curr_item);
+            }
+        }
+        else if (ser.writing())
+        {
+            for (auto curr_item = array_begin; curr_item != array_end;  ++curr_item)
+            {
+                auto item_ser = ser.child(container_item_name);
+                item_ser.serialize_string(*curr_item);
+            }
+        }
+    }
+    
     // serialize an array of objects derived from pugi_serializer::serialized_base
     template<typename T_ITEM>
     void serialize_array(pugi_serializer::serializer_base& ser, T_ITEM* array_begin, T_ITEM* array_end, const char* container_item_name)
