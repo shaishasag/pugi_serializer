@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F6C1B82225C432CE001B30ED /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82125C432CE001B30ED /* main.cpp */; };
+		F6547B1C25C8A652000625A5 /* TestSerializeDefaults.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */; };
+		F6C1B82225C432CE001B30ED /* TestSerializeBaseTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */; };
 		F6C1B82A25C436C8001B30ED /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C1B82925C436C8001B30ED /* libgtest.a */; };
 		F6C1B82D25C43829001B30ED /* pugi_serializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */; };
 		F6C1B83025C43840001B30ED /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82E25C43840001B30ED /* pugixml.cpp */; };
@@ -27,14 +28,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestSerializeDefaults.cpp; sourceTree = "<group>"; };
 		F6C1B81E25C432CE001B30ED /* pugi_serializer_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pugi_serializer_tests; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6C1B82125C432CE001B30ED /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestSerializeBaseTypes.cpp; sourceTree = SOURCE_ROOT; };
 		F6C1B82825C43406001B30ED /* googletest */ = {isa = PBXFileReference; lastKnownFileType = folder; name = googletest; path = ../../../../../../../../Users/shai/Desktop/googletest; sourceTree = "<group>"; };
 		F6C1B82925C436C8001B30ED /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = ../../../../../../../../Users/shai/Desktop/googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
-		F6C1B82B25C43829001B30ED /* pugi_serializer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugi_serializer.hpp; path = ../../src/pugi_serializer.hpp; sourceTree = "<group>"; };
-		F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugi_serializer.cpp; path = ../../src/pugi_serializer.cpp; sourceTree = "<group>"; };
-		F6C1B82E25C43840001B30ED /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = ../../../pugixml/1.9/pugixml.cpp; sourceTree = "<group>"; };
-		F6C1B82F25C43840001B30ED /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../../../pugixml/1.9/pugixml.hpp; sourceTree = "<group>"; };
+		F6C1B82B25C43829001B30ED /* pugi_serializer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugi_serializer.hpp; path = ../src/pugi_serializer.hpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugi_serializer.cpp; path = ../src/pugi_serializer.cpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82E25C43840001B30ED /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = ../../pugixml/1.9/pugixml.cpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82F25C43840001B30ED /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../../pugixml/1.9/pugixml.hpp; sourceTree = SOURCE_ROOT; };
 		F6C1B83125C43D0C001B30ED /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = ../../../../../../../../Users/shai/Desktop/googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,13 +56,14 @@
 		F6C1B81525C432CE001B30ED = {
 			isa = PBXGroup;
 			children = (
+				F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */,
+				F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */,
 				F6C1B82E25C43840001B30ED /* pugixml.cpp */,
 				F6C1B82F25C43840001B30ED /* pugixml.hpp */,
 				F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */,
 				F6C1B82B25C43829001B30ED /* pugi_serializer.hpp */,
 				F6C1B82925C436C8001B30ED /* libgtest.a */,
 				F6C1B83125C43D0C001B30ED /* libgtest_main.a */,
-				F6C1B82025C432CE001B30ED /* pugi_serializer_tests */,
 				F6C1B82825C43406001B30ED /* googletest */,
 				F6C1B81F25C432CE001B30ED /* Products */,
 			);
@@ -72,14 +75,6 @@
 				F6C1B81E25C432CE001B30ED /* pugi_serializer_tests */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		F6C1B82025C432CE001B30ED /* pugi_serializer_tests */ = {
-			isa = PBXGroup;
-			children = (
-				F6C1B82125C432CE001B30ED /* main.cpp */,
-			);
-			path = pugi_serializer_tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,7 +135,8 @@
 			files = (
 				F6C1B83025C43840001B30ED /* pugixml.cpp in Sources */,
 				F6C1B82D25C43829001B30ED /* pugi_serializer.cpp in Sources */,
-				F6C1B82225C432CE001B30ED /* main.cpp in Sources */,
+				F6547B1C25C8A652000625A5 /* TestSerializeDefaults.cpp in Sources */,
+				F6C1B82225C432CE001B30ED /* TestSerializeBaseTypes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

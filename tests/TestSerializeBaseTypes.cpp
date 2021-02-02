@@ -4,7 +4,7 @@
 #include "pugi_serializer.hpp"
 
 template <class T>
-class TestSerializeSignedTypes : public testing::Test {
+class TestSerializeBaseTypes : public testing::Test {
 protected:
     // The ctor calls the factory function to create a prime table
     // implemented by T.
@@ -42,12 +42,14 @@ protected:
 using testing::Types;
 
 typedef Types<int, long long> signed_base_type;
+template <class T>
+class TestSerializeSignedTypes : public TestSerializeBaseTypes<T> {};
 TYPED_TEST_SUITE(TestSerializeSignedTypes, signed_base_type);
 TYPED_TEST(TestSerializeSignedTypes, SignedReadWrite)
 {
     this->init(-171, -1917, 10001, 101);
     this->write();
-    this->pdoc.print(std::cerr, "    ");
+    //this->pdoc.print(std::cerr, "    ");
     this->read();
     
     EXPECT_EQ(this->write_to_text, this->read_from_text);
@@ -56,13 +58,13 @@ TYPED_TEST(TestSerializeSignedTypes, SignedReadWrite)
 
 typedef Types<unsigned, unsigned long long> unsigned_base_type;
 template <class T>
-class TestSerializeUnsignedTypes : public TestSerializeSignedTypes<T> {};
+class TestSerializeUnsignedTypes : public TestSerializeBaseTypes<T> {};
 TYPED_TEST_SUITE(TestSerializeUnsignedTypes, unsigned_base_type);
 TYPED_TEST(TestSerializeUnsignedTypes, UnsignedReadWrite)
 {
     this->init(5566, 9988, 10001, 101);
     this->write();
-    this->pdoc.print(std::cerr, "    ");
+    //this->pdoc.print(std::cerr, "    ");
     this->read();
     
     EXPECT_EQ(this->write_to_text, this->read_from_text);
@@ -71,13 +73,13 @@ TYPED_TEST(TestSerializeUnsignedTypes, UnsignedReadWrite)
 
 typedef Types<float, double> float_base_type;
 template <class T>
-class TestSerializeFloatTypes : public TestSerializeSignedTypes<T> {};
+class TestSerializeFloatTypes : public TestSerializeBaseTypes<T> {};
 TYPED_TEST_SUITE(TestSerializeFloatTypes, unsigned_base_type);
 TYPED_TEST(TestSerializeFloatTypes, float_base_type)
 {
     this->init(-1.0304, 198.456, -1, -2);
     this->write();
-    this->pdoc.print(std::cerr, "    ");
+    //this->pdoc.print(std::cerr, "    ");
     this->read();
     
     EXPECT_EQ(this->write_to_text, this->read_from_text);
@@ -86,13 +88,13 @@ TYPED_TEST(TestSerializeFloatTypes, float_base_type)
 
 typedef Types<bool> bool_base_type;
 template <class T>
-class TestSerializeBoolTypes : public TestSerializeSignedTypes<T> {};
+class TestSerializeBoolTypes : public TestSerializeBaseTypes<T> {};
 TYPED_TEST_SUITE(TestSerializeBoolTypes, bool_base_type);
 TYPED_TEST(TestSerializeBoolTypes, bool_base_type)
 {
     this->init(true, false, false, true);
     this->write();
-    this->pdoc.print(std::cerr, "    ");
+    //this->pdoc.print(std::cerr, "    ");
     this->read();
     
     EXPECT_EQ(this->write_to_text, this->read_from_text);

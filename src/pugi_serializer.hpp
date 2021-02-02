@@ -155,12 +155,12 @@ namespace pugi_serializer
         ~reader();
     };
 
-    class serialized_base
-    {
-    public:
-        virtual ~serialized_base() = default;
-        virtual void serialize(pugi_serializer::serializer_base ser) = 0;
-    };
+//    class serialized_base
+//    {
+//    public:
+//        virtual ~serialized_base() = default;
+//        virtual void serialize(pugi_serializer::serializer_base ser) = 0;
+//    };
     
     // serialize an array of string objects
     template<typename TSTR>
