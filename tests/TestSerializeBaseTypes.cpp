@@ -3,15 +3,22 @@
 #include "gtest/gtest.h"
 #include "pugi_serializer.hpp"
 
+// Tests for write/read of different base types, double, float, int, etc.
+// list of types is determined by what is available in pugixml.
+// values are writen as:
+// - content of xml element, e.g. <node>17</node>
+// - value of an attribute, e.g. <node attrib="17></node>
+// The value are then read from content and attribute and compared to the expected values
+
 template <class T>
 class TestSerializeBaseTypes : public testing::Test {
 protected:
-    // The ctor calls the factory function to create a prime table
-    // implemented by T.
+
     T write_to_text = 0;
     T write_to_attrib = 0;
     T read_from_text = 0;
     T read_from_attrib = 0;
+    
     pugi::xml_document pdoc;
     
     void init(T write_to_text_, T write_to_attrib_, T read_from_text_, T read_from_attrib_)
@@ -41,6 +48,7 @@ protected:
 
 using testing::Types;
 
+// test signed types
 typedef Types<int, long long> signed_base_type;
 template <class T>
 class TestSerializeSignedTypes : public TestSerializeBaseTypes<T> {};
@@ -56,6 +64,7 @@ TYPED_TEST(TestSerializeSignedTypes, SignedReadWrite)
     EXPECT_EQ(this->write_to_attrib, this->read_from_attrib);
 }
 
+// test unsigned types
 typedef Types<unsigned, unsigned long long> unsigned_base_type;
 template <class T>
 class TestSerializeUnsignedTypes : public TestSerializeBaseTypes<T> {};
@@ -71,6 +80,7 @@ TYPED_TEST(TestSerializeUnsignedTypes, UnsignedReadWrite)
     EXPECT_EQ(this->write_to_attrib, this->read_from_attrib);
 }
 
+// test floating point types
 typedef Types<float, double> float_base_type;
 template <class T>
 class TestSerializeFloatTypes : public TestSerializeBaseTypes<T> {};
@@ -86,6 +96,7 @@ TYPED_TEST(TestSerializeFloatTypes, float_base_type)
     EXPECT_EQ(this->write_to_attrib, this->read_from_attrib);
 }
 
+// test bool type
 typedef Types<bool> bool_base_type;
 template <class T>
 class TestSerializeBoolTypes : public TestSerializeBaseTypes<T> {};

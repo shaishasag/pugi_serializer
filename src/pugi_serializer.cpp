@@ -282,7 +282,7 @@ public:
     {
         if (_node.text())
         {
-            _text = _node.value();
+            _text = _node.text().as_string();
         }
         else
         {

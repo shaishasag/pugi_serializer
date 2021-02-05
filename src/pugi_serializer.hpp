@@ -74,15 +74,58 @@ namespace pugi_serializer
         template<typename T>
         void child_and_text(const char* _child_name, T& _value, const T def)
         {
-            if (reading() || get_should_write_default_values() || _value != def)
+            if (reading())
+            {
+                child(_child_name).text(_value, def);
+            }
+            else if (get_should_write_default_values() || _value != def)
+            {
                 child(_child_name).text(_value);
+            }
+        }
+        template<typename T>
+        void child_and_text(const char* _child_name, T& _value, const char* def)
+        // write: will not create the child if _value==def, unless get_should_write_default_values()
+        // read: read the text of the child, if either child does not exist or child's text is empty - return the default
+        {
+            if (reading())
+            {
+                child(_child_name).text(_value, def);
+            }
+            else if (get_should_write_default_values() || _value != def)
+            {
+                child(_child_name).text(_value);
+            }
         }
 
         template<typename T>
         void child_and_attribute(const char* _child_name, const char* _attrib_name, T& _value, const T def)
+        // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values()
+        // read: read the attribute of the child, if either child does not exist or attribute does not exists return the default
         {
-            if (reading() || get_should_write_default_values() || _value != def)
-                child(_child_name).attribute(_attrib_name, _value);
+            if (reading())
+            {
+                child(_child_name).attribute(_attrib_name,_value, def);
+            }
+            else if (get_should_write_default_values() || _value != def)
+            {
+                child(_child_name).attribute(_attrib_name,_value, def);
+            }
+        }
+
+        template<typename T>
+        void child_and_attribute(const char* _child_name, const char* _attrib_name, T& _value, const char* def)
+        // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values()
+        // read: read the attribute of the child, if either child does not exist or attribute does not exists return the default
+        {
+            if (reading())
+            {
+                child(_child_name).attribute(_attrib_name,_value, def);
+            }
+            else if (get_should_write_default_values() || _value != def)
+            {
+                child(_child_name).attribute(_attrib_name,_value, def);
+            }
         }
 
         const char* c_str(const char* _c_str);
