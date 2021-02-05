@@ -38,12 +38,14 @@ protected:
 // serialize simple integer value to/from content of an xml node
 TEST_F(NodeValueExample, NodeValue)
 {
-    this->xml_to_read = "<doc><node>17</node></doc>";
+    this->xml_to_read = R"(<doc><node>17</node></doc>)";
 
     {
         this->read_with_pugi(); // read xml using pugixml into this->rdoc
+        
         pugi_serializer::reader read_ser(this->rdoc); // create a reading serializer
         this->serialize(read_ser);  // serialize the xml to members of NodeValueExample
+        
         EXPECT_EQ(this->node_value, 17) << "expected this->node_value to be 17 got " << this->node_value;
     }
 
@@ -76,8 +78,8 @@ TEST_F(AttribValueExample, AttribValue)
     {
         this->read_with_pugi(); // read xml using pugixml into this->rdoc
         
-        pugi_serializer::reader read_ser(this->rdoc); // create a reading serializer
-        this->serialize(read_ser);  // serialize the xml to members of NodeValueExample
+        pugi_serializer::reader read_ser(this->rdoc); // create a reading serializer attached to this->rdoc
+        this->serialize(read_ser);  // serialize the xml to members of AttribValueExample
         
         EXPECT_EQ(this->attrib_value, 17) << "expected this->attrib_value to be 17 got " << this->attrib_value;
     }
