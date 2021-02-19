@@ -54,7 +54,7 @@ TEST_F(NodeValueExample, NodeValue)
         this->serialize(write_ser);  // serialize the xml from members of NodeValueExample
 
         this->write_with_pugi();  // write the xml to this->str_srm
-
+        
         // xml that was create should identical to the one that was read above
         EXPECT_EQ(str_srm.str(), this->xml_to_read);
     }
