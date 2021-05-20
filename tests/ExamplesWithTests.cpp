@@ -4,6 +4,14 @@
 #include "gtest/gtest.h"
 #include "pugi_serializer.hpp"
 
+static unsigned int pugi_parse_options =
+  pugi::parse_trim_pcdata  // remove while space from begin and end of .text()
+| pugi::parse_embed_pcdata
+| pugi::parse_escapes
+| pugi::parse_cdata
+| pugi::parse_eol
+| pugi::parse_wconv_attribute;
+
 class ExampleWithTestBase : public testing::Test {
 protected:
     const char* xml_to_read;
@@ -11,7 +19,7 @@ protected:
     
     void read_with_pugi()
     {
-        rdoc.load_string(xml_to_read);
+        rdoc.load_string(xml_to_read, pugi_parse_options);
     }
     
     std::ostringstream str_srm;
@@ -93,4 +101,9 @@ TEST_F(AttribValueExample, AttribValue)
         // xml that was create should identical to the one that was read above
         EXPECT_EQ(str_srm.str(), this->xml_to_read);
     }
+}
+
+
+TEST_F(NodeValueExample, Research)
+{
 }

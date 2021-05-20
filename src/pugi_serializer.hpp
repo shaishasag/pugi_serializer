@@ -55,10 +55,10 @@ namespace pugi_serializer
 
         serializer_base(const serializer_base&) = default;
         serializer_base& operator=(const serializer_base&);
-        serializer_base(serializer_base&&) = default;
-        serializer_base& operator=(serializer_base&&) = default;
+//        serializer_base(serializer_base&&) = default;
+//        serializer_base& operator=(serializer_base&&) = default;
 
-        operator bool() const { return _curr_node; }
+        operator bool() const { return bool(_curr_node); }
         bool reading() const;
         bool writing() const;
         void set_should_write_default_values(const bool _should_write_default_values);
@@ -198,12 +198,12 @@ namespace pugi_serializer
         ~reader();
     };
 
-//    class serialized_base
-//    {
-//    public:
-//        virtual ~serialized_base() = default;
-//        virtual void serialize(pugi_serializer::serializer_base ser) = 0;
-//    };
+    class serialized_base
+    {
+    public:
+        virtual ~serialized_base() = default;
+        virtual void serialize(pugi_serializer::serializer_base& ser) = 0;
+    };
     
     // serialize an array of string objects
     template<typename TSTR>

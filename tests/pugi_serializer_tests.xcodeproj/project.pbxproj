@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		F6547B1C25C8A652000625A5 /* TestSerializeDefaults.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */; };
 		F691412F25CD3EE70067247D /* ExamplesWithTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */; };
+		F692398D263C4EB600A84122 /* TestProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F692398C263C4EB600A84122 /* TestProperties.cpp */; };
+		F69D1C502656BB02007FC058 /* TestConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */; };
+		F69D1C552656C2C2007FC058 /* TestBigFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F69D1C532656C2C2007FC058 /* TestBigFile.cpp */; };
 		F6C1B82225C432CE001B30ED /* TestSerializeBaseTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */; };
 		F6C1B82A25C436C8001B30ED /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C1B82925C436C8001B30ED /* libgtest.a */; };
 		F6C1B82D25C43829001B30ED /* pugi_serializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */; };
@@ -31,6 +34,11 @@
 /* Begin PBXFileReference section */
 		F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestSerializeDefaults.cpp; sourceTree = "<group>"; };
 		F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExamplesWithTests.cpp; sourceTree = "<group>"; };
+		F692398C263C4EB600A84122 /* TestProperties.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestProperties.cpp; sourceTree = "<group>"; };
+		F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestConstruction.cpp; sourceTree = "<group>"; };
+		F69D1C532656C2C2007FC058 /* TestBigFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestBigFile.cpp; sourceTree = "<group>"; };
+		F69D1C542656C2C2007FC058 /* TestBigFile.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestBigFile.hpp; sourceTree = "<group>"; };
+		F69D1C572656C3A7007FC058 /* mondial-3.0.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "mondial-3.0.xml"; sourceTree = "<group>"; };
 		F6C1B81E25C432CE001B30ED /* pugi_serializer_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pugi_serializer_tests; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestSerializeBaseTypes.cpp; sourceTree = SOURCE_ROOT; };
 		F6C1B82825C43406001B30ED /* googletest */ = {isa = PBXFileReference; lastKnownFileType = folder; name = googletest; path = ../../../../../../../../Users/shai/Desktop/googletest; sourceTree = "<group>"; };
@@ -58,6 +66,11 @@
 		F6C1B81525C432CE001B30ED = {
 			isa = PBXGroup;
 			children = (
+				F69D1C572656C3A7007FC058 /* mondial-3.0.xml */,
+				F69D1C532656C2C2007FC058 /* TestBigFile.cpp */,
+				F69D1C542656C2C2007FC058 /* TestBigFile.hpp */,
+				F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */,
+				F692398C263C4EB600A84122 /* TestProperties.cpp */,
 				F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */,
 				F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */,
 				F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */,
@@ -136,8 +149,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F69D1C502656BB02007FC058 /* TestConstruction.cpp in Sources */,
 				F6C1B83025C43840001B30ED /* pugixml.cpp in Sources */,
+				F69D1C552656C2C2007FC058 /* TestBigFile.cpp in Sources */,
 				F6C1B82D25C43829001B30ED /* pugi_serializer.cpp in Sources */,
+				F692398D263C4EB600A84122 /* TestProperties.cpp in Sources */,
 				F691412F25CD3EE70067247D /* ExamplesWithTests.cpp in Sources */,
 				F6547B1C25C8A652000625A5 /* TestSerializeDefaults.cpp in Sources */,
 				F6C1B82225C432CE001B30ED /* TestSerializeBaseTypes.cpp in Sources */,
@@ -203,7 +219,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -258,6 +274,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
