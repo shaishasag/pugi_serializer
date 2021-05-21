@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# IDE junk
+*xcshareddata*
+
+# output files
+mondial-3.0.out.xml
