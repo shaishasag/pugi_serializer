@@ -73,9 +73,9 @@ namespace pugi_serializer
 
         template<typename TValue, typename TDefault>
         serializer_base child_and_text(const char* _child_name, TValue& _value, const TDefault def)
-        // write: will not create the child if _value==def, unless get_should_write_default_values()
+        // write: will not create the child if _value==def, unless get_should_write_default_values() == true
         // read: read the text of the child, if either child does not exist or child's text is empty - return the default
-        // using different types for value and default so child_and_text can be called with TValue=std::string, TDefault=const char*
+        // using different types for value and default so, for example, child_and_text can be called with TValue=std::string, TDefault=const char*
         {
             if (reading())
             {
@@ -95,7 +95,7 @@ namespace pugi_serializer
         
         template<typename TValue, typename TDefault>
         serializer_base child_and_attribute(const char* _child_name, const char* _attrib_name, TValue& _value, const TDefault def)
-        // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values()
+        // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values() == true
         // read: read the attribute of the child, if either child does not exist or attribute does not exists return the default
         {
             if (reading() || get_should_write_default_values() || _value != def)
@@ -110,7 +110,7 @@ namespace pugi_serializer
 //
 //        template<typename T>
 //        void child_and_attribute(const char* _child_name, const char* _attrib_name, T& _value, const char* def)
-//        // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values()
+//        // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values() == true
 //        // read: read the attribute of the child, if either child does not exist or attribute does not exists return the default
 //        {
 //            if (reading())
@@ -223,6 +223,8 @@ namespace pugi_serializer
     }
     
     // serialize an array of objects derived from pugi_serializer::serialized_base
+    // write: iterate from array_begin to array_end, cretae element named container_item_name for for each and call T_ITEM.serialize on new element
+    // read: iterate on all elements named container_item_name and serialize each into a new T_ITEM, but no more than array_end-array_begin times
     template<typename T_ITEM>
     void serialize_array(pugi_serializer::serializer_base& ser, T_ITEM* array_begin, T_ITEM* array_end, const char* container_item_name)
     {
@@ -247,6 +249,8 @@ namespace pugi_serializer
     }
 
     // serialize a container of objects derived from pugi_serializer::serialized_base
+    // write: iterate in_container, create element named container_item_name for for each and call T_ITEM.serialize on new element
+    // read: iterate on all elements named container_item_name and serialize each into a new T_ITEM, but no more than array_end-array_begin times
     template<typename TCONTAINER>
     void serialize_container(pugi_serializer::serializer_base& ser, TCONTAINER& in_container, const char* container_item_name)
     {

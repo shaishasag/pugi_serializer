@@ -230,7 +230,7 @@ public:
 class mountain : public feature
 {
 public:
-    uint64_t height;
+    uint64_t height = 0;
     void serialize(pugi_serializer::serializer_base& ser) override
     {
         feature::serialize(ser);
@@ -238,54 +238,69 @@ public:
     }
 };
 
-//<mountain id='f0_36835'
-//  name='Kilimanjaro'
-//  longitude='37'
-//  latitude='-3'
-//  height='5895'>
-//  <located
-//    country='f0_1410'
-//    province='f0_20031'/>
-//</mountain>
-//<desert id='f0_37221'
-//  name='Mujunkum'
-//  area='37500'>
-//  <located
-//    country='f0_538'
-//    province='f0_18723'/>
-//  <located
-//    country='f0_538'
-//    province='f0_18732'/>
-//<island id='f0_37392'
-//  name='Madagaskar'
-//  area='587041'>
-//  <located
-//    country='f0_1307'
-//    province='f0_19940'/>
-//  <located
-//    country='f0_1307'
-//    province='f0_19941'/>
-//<river id='f0_38145'
-//  length='1230'
-//  name='Cuango'>
-//  <located
-//    country='f0_1172'
-//    province='f0_19842'/>
-//<to
-//    type='sea'
-//    water='f0_38639'/>
-//<sea id='f0_38020'
-//   name='North Sea'
-//   depth='200'>
-//   <located
-//     country='f0_325'
-//     province='f0_17695'/>
-//<lake id='f0_39083'
-//   name='Ozero Baikal'
-//   area='31500'>
-//   <located
-//     country='f0_358'
-//     province='f0_18066'/>
+class desert : public entity
+{
+public:
+    uint64_t area = 0;
+    void serialize(pugi_serializer::serializer_base& ser) override
+    {
+        entity::serialize(ser);
+        ser.attribute("area", area);
+    }
+};
+
+class river : public entity
+{
+public:
+    std::string to_type;
+    std::string to_water;
+    void serialize(pugi_serializer::serializer_base& ser) override
+    {
+        entity::serialize(ser);
+        auto to_node = ser.child("to");
+        to_node.attribute("type", to_type);
+        to_node.attribute("water", to_water);
+    }
+};
+
+class island : public entity
+{
+public:
+    uint64_t area = 0;
+    void serialize(pugi_serializer::serializer_base& ser) override
+    {
+        entity::serialize(ser);
+        ser.attribute("area", area);
+    }
+};
+
+class sea : public entity
+{
+public:
+    uint64_t depth = 0;
+    std::vector<located> locations_vec;
+
+    void serialize(pugi_serializer::serializer_base& ser) override
+    {
+        entity::serialize(ser);
+        ser.attribute("depth", depth);
+        pugi_serializer::serialize_container(ser, locations_vec, "located");
+    }
+};
+
+class lake : public entity
+{
+public:
+    float area = 0.0f;
+    std::vector<located> locations_vec;
+
+    void serialize(pugi_serializer::serializer_base& ser) override
+    {
+        entity::serialize(ser);
+        ser.attribute("area", area, 0.0f);
+        pugi_serializer::serialize_container(ser, locations_vec, "located");
+    }
+};
 
 class world : public pugi_serializer::serialized_base
 {
@@ -294,12 +309,24 @@ public:
     std::vector<country> country_vec;
     std::vector<organization> organization_vec;
     std::vector<mountain> mountain_vec;
+    std::vector<desert> desert_vec;
+    std::vector<island> island_vec;
+    std::vector<river> river_vec;
+    std::vector<sea> sea_vec;
+    std::vector<lake> lake_vec;
+    
+
     void serialize(pugi_serializer::serializer_base& ser) override
     {
         pugi_serializer::serialize_container(ser, continent_vec, "continent");
         pugi_serializer::serialize_container(ser, country_vec, "country");
         pugi_serializer::serialize_container(ser, organization_vec, "organization");
         pugi_serializer::serialize_container(ser, mountain_vec, "mountain");
+        pugi_serializer::serialize_container(ser, desert_vec, "desert");
+        pugi_serializer::serialize_container(ser, island_vec, "island");
+        pugi_serializer::serialize_container(ser, river_vec, "river");
+        pugi_serializer::serialize_container(ser, sea_vec, "sea");
+        pugi_serializer::serialize_container(ser, lake_vec, "lake");
     }
 };
 

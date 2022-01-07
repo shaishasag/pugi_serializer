@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include "gtest/gtest.h"
+#include "gtest/gtest-typed-test.h"
+
 #include "pugi_serializer.hpp"
 
 // Tests for write/read of different base types, double, float, int, etc.
@@ -10,9 +12,11 @@
 // - value of an attribute, e.g. <node attrib="17></node>
 // The value are then read from content and attribute and compared to the expected values
 
-template <class T>
-class TestSerializeBaseTypes : public testing::Test {
-protected:
+
+template <typename T>
+class TestSerializeBaseTypes
+{
+public:
 
     T write_to_text = 0;
     T write_to_attrib = 0;
@@ -46,13 +50,13 @@ protected:
     }
 };
 
-using testing::Types;
 
 // test signed types
-typedef Types<int, long long> signed_base_type;
+using signed_base_type = testing::Types<int, long long>;
 template <class T>
-class TestSerializeSignedTypes : public TestSerializeBaseTypes<T> {};
-TYPED_TEST_SUITE(TestSerializeSignedTypes, signed_base_type);
+class TestSerializeSignedTypes : public TestSerializeBaseTypes<T>,  public testing::Test {};
+TYPED_TEST_CASE(TestSerializeSignedTypes, signed_base_type);
+
 TYPED_TEST(TestSerializeSignedTypes, SignedReadWrite)
 {
     this->init(-171, -1917, 10001, 101);
@@ -65,10 +69,10 @@ TYPED_TEST(TestSerializeSignedTypes, SignedReadWrite)
 }
 
 // test unsigned types
-typedef Types<unsigned, unsigned long long> unsigned_base_type;
+using unsigned_base_type = testing::Types<unsigned, unsigned long long> ;
 template <class T>
-class TestSerializeUnsignedTypes : public TestSerializeBaseTypes<T> {};
-TYPED_TEST_SUITE(TestSerializeUnsignedTypes, unsigned_base_type);
+class TestSerializeUnsignedTypes : public TestSerializeBaseTypes<T>,  public testing::Test {};
+TYPED_TEST_CASE(TestSerializeUnsignedTypes, unsigned_base_type);
 TYPED_TEST(TestSerializeUnsignedTypes, UnsignedReadWrite)
 {
     this->init(5566, 9988, 10001, 101);
@@ -81,10 +85,10 @@ TYPED_TEST(TestSerializeUnsignedTypes, UnsignedReadWrite)
 }
 
 // test floating point types
-typedef Types<float, double> float_base_type;
+using float_base_type = testing::Types<float, double>;
 template <class T>
-class TestSerializeFloatTypes : public TestSerializeBaseTypes<T> {};
-TYPED_TEST_SUITE(TestSerializeFloatTypes, unsigned_base_type);
+class TestSerializeFloatTypes : public TestSerializeBaseTypes<T>,  public testing::Test {};
+TYPED_TEST_CASE(TestSerializeFloatTypes, unsigned_base_type);
 TYPED_TEST(TestSerializeFloatTypes, float_base_type)
 {
     this->init(-1.0304, 198.456, -1, -2);
@@ -97,10 +101,10 @@ TYPED_TEST(TestSerializeFloatTypes, float_base_type)
 }
 
 // test bool type
-typedef Types<bool> bool_base_type;
+using bool_base_type = testing::Types<bool> ;
 template <class T>
-class TestSerializeBoolTypes : public TestSerializeBaseTypes<T> {};
-TYPED_TEST_SUITE(TestSerializeBoolTypes, bool_base_type);
+class TestSerializeBoolTypes : public TestSerializeBaseTypes<T>,  public testing::Test {};
+TYPED_TEST_CASE(TestSerializeBoolTypes, bool_base_type);
 TYPED_TEST(TestSerializeBoolTypes, bool_base_type)
 {
     this->init(true, false, false, true);

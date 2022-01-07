@@ -37,7 +37,6 @@
 		F692398C263C4EB600A84122 /* TestProperties.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestProperties.cpp; sourceTree = "<group>"; };
 		F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestConstruction.cpp; sourceTree = "<group>"; };
 		F69D1C532656C2C2007FC058 /* TestBigFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestBigFile.cpp; sourceTree = "<group>"; };
-		F69D1C542656C2C2007FC058 /* TestBigFile.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestBigFile.hpp; sourceTree = "<group>"; };
 		F69D1C572656C3A7007FC058 /* mondial-3.0.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "mondial-3.0.xml"; sourceTree = "<group>"; };
 		F6C1B81E25C432CE001B30ED /* pugi_serializer_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pugi_serializer_tests; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestSerializeBaseTypes.cpp; sourceTree = SOURCE_ROOT; };
@@ -68,7 +67,6 @@
 			children = (
 				F69D1C572656C3A7007FC058 /* mondial-3.0.xml */,
 				F69D1C532656C2C2007FC058 /* TestBigFile.cpp */,
-				F69D1C542656C2C2007FC058 /* TestBigFile.hpp */,
 				F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */,
 				F692398C263C4EB600A84122 /* TestProperties.cpp */,
 				F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */,
@@ -214,8 +212,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /Users/shai/Desktop/googletest/googletest/include;
-				LIBRARY_SEARCH_PATHS = /Users/shai/Desktop/googletest/build/lib;
+				HEADER_SEARCH_PATHS = /Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Code/googletest/include;
+				LIBRARY_SEARCH_PATHS = "/Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Products/1.0/Mac/$(CONFIGURATION)";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -269,8 +267,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /Users/shai/Desktop/googletest/googletest/include;
-				LIBRARY_SEARCH_PATHS = /Users/shai/Desktop/googletest/build/lib;
+				HEADER_SEARCH_PATHS = /Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Code/googletest/include;
+				LIBRARY_SEARCH_PATHS = "/Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Products/1.0/Mac/$(CONFIGURATION)";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
