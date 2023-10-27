@@ -3,9 +3,20 @@
 #include "gtest/gtest.h"
 #include "pugi_serializer.hpp"
 
+#if (__cplusplus == 202002L)  // c++20
+    auto operator<=>(const std::string& lhs, const std::string& rhs)
+    {
+        // apple clang! not support for std::string::operator<=> (8-<)
+    }
+#endif
+
+
 class encompassed : public pugi_serializer::serialized_base
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const encompassed&, const encompassed&) = default;
+#endif
     std::string continent;
     float percentage;
     void serialize(pugi_serializer::serializer_base& ser) override
@@ -18,6 +29,9 @@ public:
 class border : public pugi_serializer::serialized_base
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const border&, const border&) = default;
+#endif
     std::string country;
     float length;
     void serialize(pugi_serializer::serializer_base& ser) override
@@ -31,6 +45,10 @@ public:
 class entity : public pugi_serializer::serialized_base
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const entity&, const entity&) = default;
+#endif
+
     std::string id;
     std::string name;
     void serialize(pugi_serializer::serializer_base& ser) override
@@ -43,6 +61,9 @@ public:
 class coordinates : public pugi_serializer::serialized_base
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const coordinates&, const coordinates&) = default;
+#endif
     float longitude = 0.0;
     float latitude = 0.0;
     void serialize(pugi_serializer::serializer_base& ser) override
@@ -56,11 +77,17 @@ public:
 class continent : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const continent&, const continent&) = default;
+#endif
 };
 
 class percentage_value : public pugi_serializer::serialized_base
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const percentage_value&, const percentage_value&) = default;
+#endif
     std::string name;
     float percentage = 0.0;
     void serialize(pugi_serializer::serializer_base& ser) override
@@ -73,23 +100,26 @@ public:
 class city : public entity, coordinates
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const city&, const city&) = default;
+#endif
     std::string country;
     int population_year = 0;
     unsigned int population = 0;
 
     void serialize(pugi_serializer::serializer_base& ser) override
     {
-        // city has it's name as element text, nit as attribute so cannot call
+        // city has it's name as element text, not as attribute so cannot call
         //entity::serialize(ser);
         
         ser.attribute("id", id);
-        ser.child_and_text("name", name, "");
+        ser.child_with_text("name", name, "");
 
         ser.attribute("country", country);
         
         coordinates::serialize(ser);
         
-        auto population_ser = ser.child_and_text("population", population, 0);
+        auto population_ser = ser.child_with_text("population", population, (unsigned int)0);
         // note that when wrtting and set_should_write_default_values(false),
         // attrib "year" will only be written if population!=0
         population_ser.attribute("year", population_year);
@@ -99,6 +129,9 @@ public:
 class province : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const province&, const province&) = default;
+#endif
     std::string country;
     std::string capital;
     unsigned int population = 0;
@@ -121,6 +154,9 @@ public:
 class country : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const country&, const country&) = default;
+#endif
     std::string name_text;
     std::string capital;
     int population = 0;
@@ -153,7 +189,7 @@ public:
         ser.attribute("infant_mortality", infant_mortality);
         ser.attribute("gdp_agri", gdp_agri);
         ser.attribute("gdp_total", gdp_total);
-        ser.attribute("inflation", inflation, 0.0);
+        ser.attribute("inflation", inflation, 0.0f);
         ser.attribute("population", population);
         ser.attribute("indep_date", indep_date, "");
         ser.attribute("government", government);
@@ -174,6 +210,9 @@ public:
 class organization : entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const organization&, const organization&) = default;
+#endif
     std::string abbrev;
     std::string established;
     std::string headq;
@@ -205,6 +244,9 @@ public:
 class located : public pugi_serializer::serialized_base
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const located&, const located&) = default;
+#endif
     //std::vector<std::pair<std::string, std::string>> locations;
     std::string country;
     std::string province;
@@ -218,6 +260,9 @@ public:
 class feature : public entity, coordinates
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const feature&, const feature&) = default;
+#endif
     std::vector<located> locations_vec;
     void serialize(pugi_serializer::serializer_base& ser) override
     {
@@ -230,6 +275,9 @@ public:
 class mountain : public feature
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const mountain&, const mountain&) = default;
+#endif
     uint64_t height = 0;
     void serialize(pugi_serializer::serializer_base& ser) override
     {
@@ -241,6 +289,9 @@ public:
 class desert : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const desert&, const desert&) = default;
+#endif
     uint64_t area = 0;
     void serialize(pugi_serializer::serializer_base& ser) override
     {
@@ -252,11 +303,15 @@ public:
 class river : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const river&, const river&) = default;
+#endif
     std::string to_type;
     std::string to_water;
     void serialize(pugi_serializer::serializer_base& ser) override
     {
         entity::serialize(ser);
+        
         auto to_node = ser.child("to");
         to_node.attribute("type", to_type);
         to_node.attribute("water", to_water);
@@ -266,6 +321,9 @@ public:
 class island : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const island&, const island&) = default;
+#endif
     uint64_t area = 0;
     void serialize(pugi_serializer::serializer_base& ser) override
     {
@@ -277,6 +335,9 @@ public:
 class sea : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const sea&, const sea&) = default;
+#endif
     uint64_t depth = 0;
     std::vector<located> locations_vec;
 
@@ -291,6 +352,9 @@ public:
 class lake : public entity
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const lake&, const lake&) = default;
+#endif
     float area = 0.0f;
     std::vector<located> locations_vec;
 
@@ -305,6 +369,10 @@ public:
 class world : public pugi_serializer::serialized_base
 {
 public:
+#if (__cplusplus == 202002L)  // c++20
+    friend auto operator<=>(const world&, const world&) = default;
+#endif
+
     std::vector<continent> continent_vec;
     std::vector<country> country_vec;
     std::vector<organization> organization_vec;
@@ -388,23 +456,30 @@ TEST(TestBigFile, read)
 
 TEST(TestBigFile, write)
 {
-    pugi::xml_document read_doc;
     static unsigned int pugi_parse_options = pugi::parse_trim_pcdata | pugi::parse_embed_pcdata | pugi::parse_escapes | pugi::parse_cdata | pugi::parse_eol | pugi::parse_wconv_attribute;
-    pugi::xml_parse_result pugi_parse_result = read_doc.load_file(big_file_name, pugi_parse_options);
-    ASSERT_EQ(pugi::status_ok, pugi_parse_result.status) << "failed to read " << big_file_name;
 
-    pugi_serializer::reader reader_serializer(read_doc);
-    world w;
-    w.serialize(reader_serializer);
+    pugi::xml_document read_doc_1;
+    pugi::xml_parse_result pugi_parse_result = read_doc_1.load_file(big_file_name, pugi_parse_options);    
+    ASSERT_EQ(pugi::status_ok, pugi_parse_result.status) << "failed to read " << big_file_name;
+    
+    pugi_serializer::reader reader_serializer_1(read_doc_1);
+    world w_1;
+    w_1.serialize(reader_serializer_1);
     
     pugi::xml_document write_doc;
     pugi_serializer::writer writer_serializer(write_doc, "mondial");
     writer_serializer.set_should_write_default_values(false);
-    w.serialize(writer_serializer);
-
+    w_1.serialize(writer_serializer);
+    
     bool save_result = write_doc.save_file(big_file_out_name);
     ASSERT_TRUE(save_result);
     
-//    EXPECT_STREQ(read_doc.document_element().name(), "mondial") << "document_element is named " << doc.document_element().name() << " instead of " << "'mondial'";
+    pugi::xml_document read_doc_2;
+    pugi_parse_result = read_doc_2.load_file(big_file_out_name, pugi_parse_options);
+    ASSERT_EQ(pugi::status_ok, pugi_parse_result.status) << "failed to read " << big_file_name;
+    pugi_serializer::reader reader_serializer_2(read_doc_2);
+    world w_2;
+    w_2.serialize(reader_serializer_2);
 
+    ASSERT_EQ(w_1, w_2);
 }

@@ -27,8 +27,8 @@ static void serialize_attributes_with_defaults(pugi_serializer::serializer_base 
     node_Noddy.attribute("attr2", values.value2, "YES");
     
     // what if both create "Big_Ears" ?
-    ser.child_and_attribute("Big_Ears", "attr3", values.value3, "YES");
-    ser.child_and_attribute("Big_Ears", "attr4", values.value4, "YES");
+    ser.child_with_attribute("Big_Ears", "attr3", values.value3, "YES");
+    ser.child_with_attribute("Big_Ears", "attr4", values.value4, "YES");
 }
 
 TEST(TestSerializeDefaults, AttributeWithDefault)
@@ -61,8 +61,8 @@ TEST(TestSerializeDefaults, AttributeWithDefault)
 static void serialize_values_with_defaults(pugi_serializer::serializer_base ser, some_values& values)
 {
     auto node_Noddy = ser.child("Noddy");
-    node_Noddy.child_and_text("value1", values.value1, "YES");
-    node_Noddy.child_and_text("value2", values.value2, "YES");
+    node_Noddy.child_with_text("value1", values.value1, "YES");
+    node_Noddy.child_with_text("value2", values.value2, "YES");
 }
 
 TEST(TestSerializeDefaults, ValuesWithDefault)

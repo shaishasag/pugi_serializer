@@ -44,8 +44,8 @@
 		F6C1B82925C436C8001B30ED /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = ../../../../../../../../Users/shai/Desktop/googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
 		F6C1B82B25C43829001B30ED /* pugi_serializer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugi_serializer.hpp; path = ../src/pugi_serializer.hpp; sourceTree = SOURCE_ROOT; };
 		F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugi_serializer.cpp; path = ../src/pugi_serializer.cpp; sourceTree = SOURCE_ROOT; };
-		F6C1B82E25C43840001B30ED /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = ../../pugixml/1.9/pugixml.cpp; sourceTree = SOURCE_ROOT; };
-		F6C1B82F25C43840001B30ED /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../../pugixml/1.9/pugixml.hpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82E25C43840001B30ED /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = ../../pugixml/src/pugixml.cpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82F25C43840001B30ED /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../../pugixml/src/pugixml.hpp; sourceTree = SOURCE_ROOT; };
 		F6C1B83125C43D0C001B30ED /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = ../../../../../../../../Users/shai/Desktop/googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -280,6 +280,7 @@
 		F6C1B82625C432CE001B30ED /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -288,6 +289,7 @@
 		F6C1B82725C432CE001B30ED /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

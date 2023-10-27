@@ -55,8 +55,6 @@ namespace pugi_serializer
 
         serializer_base(const serializer_base&) = default;
         serializer_base& operator=(const serializer_base&);
-//        serializer_base(serializer_base&&) = default;
-//        serializer_base& operator=(serializer_base&&) = default;
 
         operator bool() const { return bool(_curr_node); }
         bool reading() const;
@@ -72,15 +70,22 @@ namespace pugi_serializer
         serializer_base next_sibling(const char* _name);
 
         template<typename TValue, typename TDefault>
-        serializer_base child_and_text(const char* _child_name, TValue& _value, const TDefault def)
+        serializer_base child_with_text(const char* _child_name, TValue& _value, const TDefault def)
         // write: will not create the child if _value==def, unless get_should_write_default_values() == true
         // read: read the text of the child, if either child does not exist or child's text is empty - return the default
-        // using different types for value and default so, for example, child_and_text can be called with TValue=std::string, TDefault=const char*
+        // using different types for value and default so, for example, child_with_text can be called with TValue=std::string, TDefault=const char*
         {
             if (reading())
             {
                 auto return_serializer = child(_child_name);
-                return_serializer.text(_value, def);
+                if constexpr (std::is_convertible_v<TDefault, std::string_view>)
+                {
+                    return_serializer.text<TValue, std::string_view>(_value, std::string_view(def));
+                }
+                else
+                {
+                    return_serializer.text<TValue, TDefault>(_value, def);
+                }
                 return return_serializer;
             }
             else if (get_should_write_default_values() || _value != def)
@@ -92,16 +97,23 @@ namespace pugi_serializer
             else
                 return serializer_base(pugi::xml_node(), _implementor);
         }
-        
+ 
         template<typename TValue, typename TDefault>
-        serializer_base child_and_attribute(const char* _child_name, const char* _attrib_name, TValue& _value, const TDefault def)
+        serializer_base child_with_attribute(const char* _child_name, const char* _attrib_name, TValue& _value, const TDefault def)
         // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values() == true
         // read: read the attribute of the child, if either child does not exist or attribute does not exists return the default
         {
             if (reading() || get_should_write_default_values() || _value != def)
             {
                 auto return_serializer = child(_child_name);
-                return_serializer.attribute(_attrib_name,_value, def);
+                if constexpr (std::is_convertible_v<TDefault, std::string_view>)
+                {
+                    return_serializer.attribute<TValue, std::string_view>(_attrib_name,_value, std::string_view(def));
+                }
+                else
+                {
+                    return_serializer.attribute(_attrib_name, _value, def);
+                }
                 return return_serializer;
             }
             else
@@ -109,7 +121,7 @@ namespace pugi_serializer
         }
 //
 //        template<typename T>
-//        void child_and_attribute(const char* _child_name, const char* _attrib_name, T& _value, const char* def)
+//        void child_with_attribute(const char* _child_name, const char* _attrib_name, T& _value, const char* def)
 //        // write: will not create the child adn the attribute if _value==def, unless get_should_write_default_values() == true
 //        // read: read the attribute of the child, if either child does not exist or attribute does not exists return the default
 //        {
@@ -133,41 +145,19 @@ namespace pugi_serializer
             in_out_string = c_str(in_out_string.c_str());
         }
  
-        void text(std::string& _text);
-        void text(std::string& _text, const char* def);
-        void text(int& _int);
-        void text(int& _int, const int def);
-        void text(unsigned& _uint);
-        void text(unsigned& _uint, const unsigned def);
-        void text(float& _float);
-        void text(float& _float, const float def);
-        void text(double& _double);
-        void text(double& _double, const double def);
-        void text(bool& _bool);
-        void text(bool& _bool, const bool def);
-        void text(long long& _llint);
-        void text(long long& _llint, const long long def);
-        void text(unsigned long long& _ullint);
-        void text(unsigned long long& _ullint, const unsigned long long def);
+        template<typename TToSerialize>
+        void text(TToSerialize& _val);
+        
+        template<typename TToSerialize, typename TDefault>
+        void text(TToSerialize& _val, const TDefault def);
+
+        template<typename TToSerialize>
+        void attribute(const char* _name, TToSerialize& _val);
+        
+        template<typename TToSerialize, typename TDefault>
+        void attribute(const char* _name, TToSerialize& _val, const TDefault def);
 
         void cdata(std::string& _text);
-
-        void attribute(const char* _attrib_name, std::string& _text);
-        void attribute(const char* _attrib_name, std::string& _text, const char* def);
-        void attribute(const char* _attrib_name, int& _int);
-        void attribute(const char* _attrib_name, int& _int, const int def);
-        void attribute(const char* _attrib_name, unsigned& _uint);
-        void attribute(const char* _attrib_name, unsigned& _uint, const unsigned def);
-        void attribute(const char* _attrib_name, float& _float);
-        void attribute(const char* _attrib_name, float& _float, const float def);
-        void attribute(const char* _attrib_name, double& _double);
-        void attribute(const char* _attrib_name, double& _double, const double def);
-        void attribute(const char* _attrib_name, bool& _bool);
-        void attribute(const char* _attrib_name, bool& _bool, const bool def);
-        void attribute(const char* _attrib_name, long long& _llint);
-        void attribute(const char* _attrib_name, long long& _llint, const long long def);
-        void attribute(const char* _attrib_name, unsigned long long& _ullint);
-        void attribute(const char* _attrib_name, unsigned long long& _ullint, const unsigned long long def);
 
    protected:
         serializer_base(pugi::xml_node node, impl::impl_base& in_implementor);
@@ -198,6 +188,12 @@ namespace pugi_serializer
     public:
         virtual ~serialized_base() = default;
         virtual void serialize(pugi_serializer::serializer_base& ser) = 0;
+#if (__cplusplus == 202002L)  // c++20
+        friend auto operator<=>(const serialized_base&, const serialized_base&)
+        {
+            return std::strong_ordering::equal;
+        }
+#endif
     };
     
     // serialize an array of string objects
@@ -235,7 +231,7 @@ namespace pugi_serializer
             {
                 T_ITEM new_value;
                 new_value.serialize(item_ser);
-                *curr_item = new_value;
+                *curr_item = std::move(new_value);
             }
         }
         else if (ser.writing())
@@ -258,9 +254,8 @@ namespace pugi_serializer
         {
             for (auto item_ser = ser.child(container_item_name); item_ser; item_ser = item_ser.next_sibling(container_item_name))
             {
-                typename TCONTAINER::value_type new_value;
+                typename TCONTAINER::value_type& new_value = in_container.emplace_back();
                 new_value.serialize(item_ser);
-                in_container.emplace_back(new_value);
             }
         }
         else if (ser.writing())
@@ -285,28 +280,3 @@ namespace pugi_serializer
 #	include XML_SERIALIZER_SOURCE
 #endif
 #endif
-
-/**
- * Copyright (C) 2021, by Shai Shsag (shaishasag@yahoo.co.uk)
- *
- * Permission is hereby granted, free of charge, to any person
- * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
- * restriction, including without limitation the rights to use,
- * copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- */

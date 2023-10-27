@@ -44,7 +44,7 @@ public:
 
     virtual const char* c_str(pugi::xml_node _node, const char* _c_str) = 0;
     virtual void text(pugi::xml_node _node, std::string& _text) = 0;
-    virtual void text(pugi::xml_node _node, std::string& _text, const char* default_text) = 0;
+    virtual void text(pugi::xml_node _node, std::string& _text, std::string_view default_text) = 0;
     virtual void text(pugi::xml_node _node, int& _int) = 0;
     virtual void text(pugi::xml_node _node, int& _int, const int def) = 0;
     virtual void text(pugi::xml_node _node, unsigned& _uint) = 0;
@@ -63,7 +63,7 @@ public:
     virtual void cdata(pugi::xml_node _node, std::string& _text) = 0;
 
     virtual void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text) = 0;
-    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, const char* default_text) = 0;
+    virtual void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, std::string_view default_text) = 0;
     virtual void attribute(pugi::xml_node _node, const char* _attrib_name, int& _int) = 0;
     virtual void attribute(pugi::xml_node _node, const char* _attrib_name, int& _int, const int def) = 0;
     virtual void attribute(pugi::xml_node _node, const char* _attrib_name, unsigned& _uint) = 0;
@@ -100,7 +100,8 @@ public:
 
     pugi::xml_node child(pugi::xml_node _node, const char* _name) override
     {
-        auto new_node = _node.append_child(_name);
+        auto new_node = _node.append_child();
+        new_node.set_name(_name);
         return new_node;
     }
 
@@ -115,7 +116,7 @@ public:
         _node.text().set(_text.c_str());
     }
     
-    void text(pugi::xml_node _node, std::string& _text, const char* default_text) override
+    void text(pugi::xml_node _node, std::string& _text, std::string_view default_text) override
     {
         if (_text != default_text)
         {
@@ -188,7 +189,7 @@ public:
     }
     
     // do not append the attribute if _text is equal to default_text
-    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, const char* default_text) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, std::string_view default_text) override
     {
         if (_write_default_values || _text != default_text)
             _node.append_attribute(_attrib_name) = _text.c_str();
@@ -278,7 +279,7 @@ public:
         _text = _node.text().as_string();
     }
     
-    void text(pugi::xml_node _node, std::string& _text, const char* default_text) override
+    void text(pugi::xml_node _node, std::string& _text, std::string_view default_text) override
     {
         if (_node.text())
         {
@@ -289,7 +290,7 @@ public:
             _text = default_text;
         }
     }
-    
+
     void text(pugi::xml_node _node, int& _val) override
     { _val = _node.text().as_int(); }
     void text(pugi::xml_node _node, int& _val, const int def) override
@@ -337,7 +338,7 @@ public:
     }
     
     // return default_text if attribute does not exists
-    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, const char* default_text) override
+    void attribute(pugi::xml_node _node, const char* _attrib_name, std::string& _text, std::string_view default_text) override
     {
         if (auto attrib = _node.attribute(_attrib_name); attrib)
             _text = attrib.as_string(_text.c_str());
@@ -462,171 +463,71 @@ const char* serializer_base::c_str(const char* _c_str)
     return _implementor.c_str(_curr_node, _c_str);
 }
 
-void serializer_base::text(std::string& _text)
-{
-    _implementor.text(_curr_node, _text);
-}
-
-void serializer_base::text(std::string& _text, const char* default_text)
-{
-    _implementor.text(_curr_node, _text, default_text);
-}
-    
-void serializer_base::text(int& _val)
+template<typename TToSerialize>
+void serializer_base::text(TToSerialize& _val)
 {
     _implementor.text(_curr_node, _val);
 }
 
-void serializer_base::text(int& _val, const int def)
+template<typename TToSerialize, typename TDefault>
+void serializer_base::text(TToSerialize& _val, const TDefault def)
 {
     _implementor.text(_curr_node, _val, def);
 }
 
-void serializer_base::text(unsigned& _val)
-{
-    _implementor.text(_curr_node, _val);
-}
-
-void serializer_base::text(unsigned& _val, const unsigned def)
-{
-    _implementor.text(_curr_node, _val, def);
-}
-
-void serializer_base::text(float& _val)
-{
-    _implementor.text(_curr_node, _val);
-}
-
-void serializer_base::text(float& _val, const float def)
-{
-    _implementor.text(_curr_node, _val, def);
-}
-
-void serializer_base::text(double& _val)
-{
-    _implementor.text(_curr_node, _val);
-}
-
-void serializer_base::text(double& _val, const double def)
-{
-    _implementor.text(_curr_node, _val, def);
-}
-
-void serializer_base::text(bool& _val)
-{
-    _implementor.text(_curr_node, _val);
-}
-
-void serializer_base::text(bool& _val, const bool def)
-{
-    _implementor.text(_curr_node, _val, def);
-}
-
-void serializer_base::text(long long& _val)
-{
-    _implementor.text(_curr_node, _val);
-}
-
-void serializer_base::text(long long& _val, const long long def)
-{
-    _implementor.text(_curr_node, _val, def);
-}
-
-void serializer_base::text(unsigned long long& _val)
-{
-    _implementor.text(_curr_node, _val);
-}
-
-void serializer_base::text(unsigned long long& _val, const unsigned long long def)
-{
-    _implementor.text(_curr_node, _val, def);
-}
+template void serializer_base::text<std::string>(std::string&);
+template void serializer_base::text<std::string>(std::string&, const std::string_view);
+template void serializer_base::text<int>(int&);
+template void serializer_base::text<int>(int&, const int);
+template void serializer_base::text<unsigned>(unsigned&);
+template void serializer_base::text<unsigned>(unsigned&, const unsigned);
+template void serializer_base::text<float>(float&);
+template void serializer_base::text<float>(float&, const float);
+template void serializer_base::text<double>(double&);
+template void serializer_base::text<double>(double&, const double);
+template void serializer_base::text<bool>(bool&);
+template void serializer_base::text<bool>(bool&, const bool);
+template void serializer_base::text<long long>(long long&);
+template void serializer_base::text<long long>(long long&, const long long);
+template void serializer_base::text<unsigned long long>(unsigned long long&);
+template void serializer_base::text<unsigned long long>(unsigned long long&, const unsigned long long);
 
 void serializer_base::cdata(std::string& _text)
 {
     _implementor.cdata(_curr_node, _text);
 }
 
-void serializer_base::attribute(const char* _name, std::string& _text)
+
+template<typename TToSerialize>
+void serializer_base::attribute(const char* _name, TToSerialize& _val)
 {
-    _implementor.attribute(_curr_node, _name, _text);
+    _implementor.attribute(_curr_node, _name, _val);
 }
 
-void serializer_base::attribute(const char* _name, std::string& _text, const char* def)
+template<typename TToSerialize, typename TDefault>
+void serializer_base::attribute(const char* _name, TToSerialize& _val, const TDefault def)
 {
-    _implementor.attribute(_curr_node, _name, _text, def);
+    _implementor.attribute(_curr_node, _name, _val, def);
 }
 
-void serializer_base::attribute(const char* _name, int& _int)
-{
-    _implementor.attribute(_curr_node, _name, _int);
-}
+template void serializer_base::attribute<std::string>(const char* _name, std::string&);
+template void serializer_base::attribute<std::string>(const char* _name, std::string&, const char*);
+template void serializer_base::attribute<std::string>(const char* _name, std::string&, const std::string_view);
+template void serializer_base::attribute<int>(const char* _name, int&);
+template void serializer_base::attribute<int>(const char* _name, int&, const int);
+template void serializer_base::attribute<unsigned>(const char* _name, unsigned&);
+template void serializer_base::attribute<unsigned>(const char* _name, unsigned&, const unsigned);
+template void serializer_base::attribute<float>(const char* _name, float&);
+template void serializer_base::attribute<float>(const char* _name, float&, const float);
+template void serializer_base::attribute<double>(const char* _name, double&);
+template void serializer_base::attribute<double>(const char* _name, double&, const double);
+template void serializer_base::attribute<bool>(const char* _name, bool&);
+template void serializer_base::attribute<bool>(const char* _name, bool&, const bool);
+template void serializer_base::attribute<long long>(const char* _name, long long&);
+template void serializer_base::attribute<long long>(const char* _name, long long&, const long long);
+template void serializer_base::attribute<unsigned long long>(const char* _name, unsigned long long&);
+template void serializer_base::attribute<unsigned long long>(const char* _name, unsigned long long&, const unsigned long long);
 
-void serializer_base::attribute(const char* _name, int& _int, const int def)
-{
-    _implementor.attribute(_curr_node, _name, _int, def);
-}
-
-void serializer_base::attribute(const char* _name, unsigned& _uint)
-{
-    _implementor.attribute(_curr_node, _name, _uint);
-}
-
-void serializer_base::attribute(const char* _name, unsigned& _uint, const unsigned def)
-{
-    _implementor.attribute(_curr_node, _name, _uint, def);
-}
-
-void serializer_base::attribute(const char* _name, float& _float)
-{
-    _implementor.attribute(_curr_node, _name, _float);
-}
-
-void serializer_base::attribute(const char* _name, float& _float, const float def)
-{
-    _implementor.attribute(_curr_node, _name, _float, def);
-}
-
-void serializer_base::attribute(const char* _name, double& _double)
-{
-    _implementor.attribute(_curr_node, _name, _double);
-}
-
-void serializer_base::attribute(const char* _name, double& _double, const double def)
-{
-    _implementor.attribute(_curr_node, _name, _double, def);
-}
-
-void serializer_base::attribute(const char* _name, bool& _bool)
-{
-    _implementor.attribute(_curr_node, _name, _bool);
-}
-
-void serializer_base::attribute(const char* _name, bool& _bool, const bool def)
-{
-    _implementor.attribute(_curr_node, _name, _bool, def);
-}
-
-void serializer_base::attribute(const char* _name, long long& _llint)
-{
-    _implementor.attribute(_curr_node, _name, _llint);
-}
-
-void serializer_base::attribute(const char* _name, long long& _llint, const long long def)
-{
-    _implementor.attribute(_curr_node, _name, _llint, def);
-}
-
-void serializer_base::attribute(const char* _name, unsigned long long& _ullint)
-{
-    _implementor.attribute(_curr_node, _name, _ullint);
-}
-
-void serializer_base::attribute(const char* _name, unsigned long long& _ullint, const unsigned long long def)
-{
-    _implementor.attribute(_curr_node, _name, _ullint, def);
-}
-    
 
 writer::writer(pugi::xml_document& doc, const char* doc_element_name)
 : serializer_base(doc.append_child(doc_element_name), *new impl::writer_impl)
