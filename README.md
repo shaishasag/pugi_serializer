@@ -41,14 +41,14 @@ void write_and_read_serialization_example()
 
     // Serialize Person object to pugi::xml_document:
     serialize_person(a_person, xml_writer);
-		
+
   	// xml created:
     // <Person>
     //     <first_name nickname="Bill">William</first_name>
     //     <last_name>Ockham</last_name>
     //     <age>62</age>
-    // </Person>  
-    
+    // </Person>
+
     // Serializing from XML:
     //
     // Create an empty Person object:
@@ -72,9 +72,9 @@ void write_and_read_serialization_example()
 
 ## About defaults
 
-When reading from XML, some expected elements or attributes might not be present in the XML being read. What to do about it? In pugixml, reading the text of non-existing element or reading the value of non-existing attribute, will result in an empty string or 0 numberic value. pugi_serializer will behave the same, and when element or attribute is not found, the empty string or 0 will be assigned.
+When reading from XML, some expected elements or attributes might not be present in the XML being read. What to do about it? In pugixml, reading the text of non-existing element or reading the value of non-existing attribute, will result in an empty string or 0 numeric value. pugi_serializer will behave the same, and when element or attribute is not found, the empty string or 0 will be assigned.
 
-If you want a  value different from empty string or 0 to be used as default,  pugi_serializer functions allow to pass a default value that will be returned if element/attribute were not found. Using the Person object from the example above, suppose we decide that if no nickname attribute is provided, the value "no-nick" will be read:
+If you want a  value different from empty string or 0 to be used as default, pugi_serializer functions allows to pass a default value that will be returned if element/attribute were not found. Using the Person object from the example above, suppose we decide that if no nickname attribute is provided, the value "no-nick" will be read:
 
 ```c++
 name_ser.attribute("nickname", person.m_nickname, "no-nick");
@@ -92,7 +92,10 @@ Is the same as calling attribute() with an empty string:
 name_ser.attribute("nickname", person.m_nickname, "");
 ```
 
-When writting to XML the default is to always write the element/attribute even if the value being written is equal to the default value. This might not always be the desired result. Sometimes it would be preferable to avoid writing default values in order to reduce XML size, or to allow the reading code to decide the default value for non-existing elements/attributes. To change the writing behaviour to not writing default values:
+When writting to XML the default is to always write the element/attribute even if the value being written is equal to the default value.
+This might not always be the desired result. Sometimes it would be preferable to avoid writing default values in order to reduce XML size,
+or to allow some other reading code to decide the default value for non-existing elements/attributes.
+To change the writing behaviour to not writing default values:
 
 ```
 serializer_base::set_should_write_default_values(false);
@@ -109,7 +112,8 @@ void serialize_person(Person& person, pugi_serializer::serializer_base in_ser)
     name_ser.attribute("nickname", person.m_nickname, "no-nick");
 
     in_ser.child("last_name").text(person.m_last_name);
-    in_ser.child_and_text("age", person.m_age, 0); // will read 0 if no age node is given, will not write 0 if age is 0
+    in_ser.child_and_text("age", person.m_age, 0); // will read 0 if no age node is found,
+                                                   // will not write 0 if age is 0
 }
 ```
 
