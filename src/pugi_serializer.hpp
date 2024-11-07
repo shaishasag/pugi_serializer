@@ -188,12 +188,10 @@ namespace pugi_serializer
     public:
         virtual ~serialized_base() = default;
         virtual void serialize(pugi_serializer::serializer_base& ser) = 0;
-#if (__cplusplus == 202002L)  // c++20
-        friend auto operator<=>(const serialized_base&, const serialized_base&)
-        {
-            return std::strong_ordering::equal;
-        }
-#endif
+        friend std::strong_ordering operator<=>(const pugi_serializer::serialized_base&,
+                                const pugi_serializer::serialized_base&);
+         friend bool operator==(const pugi_serializer::serialized_base&,
+                                const pugi_serializer::serialized_base&);
     };
     
     // serialize an array of string objects

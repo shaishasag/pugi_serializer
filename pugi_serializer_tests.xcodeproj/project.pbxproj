@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F6154E702CDCE22E00C0D783 /* gtest_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = F6154E6D2CDCE22E00C0D783 /* gtest_main.cc */; };
+		F6154E712CDCE22E00C0D783 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = F6154E6F2CDCE22E00C0D783 /* gtest-all.cc */; };
 		F6547B1C25C8A652000625A5 /* TestSerializeDefaults.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */; };
 		F691412F25CD3EE70067247D /* ExamplesWithTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */; };
 		F692398D263C4EB600A84122 /* TestProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F692398C263C4EB600A84122 /* TestProperties.cpp */; };
 		F69D1C502656BB02007FC058 /* TestConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */; };
 		F69D1C552656C2C2007FC058 /* TestBigFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F69D1C532656C2C2007FC058 /* TestBigFile.cpp */; };
 		F6C1B82225C432CE001B30ED /* TestSerializeBaseTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */; };
-		F6C1B82A25C436C8001B30ED /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C1B82925C436C8001B30ED /* libgtest.a */; };
 		F6C1B82D25C43829001B30ED /* pugi_serializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */; };
 		F6C1B83025C43840001B30ED /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6C1B82E25C43840001B30ED /* pugixml.cpp */; };
-		F6C1B83225C43D0C001B30ED /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C1B83125C43D0C001B30ED /* libgtest_main.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,21 +32,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestSerializeDefaults.cpp; sourceTree = "<group>"; };
-		F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExamplesWithTests.cpp; sourceTree = "<group>"; };
-		F692398C263C4EB600A84122 /* TestProperties.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestProperties.cpp; sourceTree = "<group>"; };
-		F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestConstruction.cpp; sourceTree = "<group>"; };
-		F69D1C532656C2C2007FC058 /* TestBigFile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestBigFile.cpp; sourceTree = "<group>"; };
-		F69D1C572656C3A7007FC058 /* mondial-3.0.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "mondial-3.0.xml"; sourceTree = "<group>"; };
+		F6154E6D2CDCE22E00C0D783 /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = ../googletest/googletest/src/gtest_main.cc; sourceTree = "<group>"; };
+		F6154E6E2CDCE22E00C0D783 /* gtest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gtest.h; path = ../googletest/googletest/include/gtest/gtest.h; sourceTree = "<group>"; };
+		F6154E6F2CDCE22E00C0D783 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "../googletest/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
+		F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = TestSerializeDefaults.cpp; path = tests/TestSerializeDefaults.cpp; sourceTree = SOURCE_ROOT; };
+		F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = ExamplesWithTests.cpp; path = tests/ExamplesWithTests.cpp; sourceTree = SOURCE_ROOT; };
+		F692398C263C4EB600A84122 /* TestProperties.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = TestProperties.cpp; path = tests/TestProperties.cpp; sourceTree = SOURCE_ROOT; };
+		F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = TestConstruction.cpp; path = tests/TestConstruction.cpp; sourceTree = SOURCE_ROOT; };
+		F69D1C532656C2C2007FC058 /* TestBigFile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = TestBigFile.cpp; path = tests/TestBigFile.cpp; sourceTree = SOURCE_ROOT; };
+		F69D1C572656C3A7007FC058 /* mondial-3.0.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = "mondial-3.0.xml"; path = "tests/mondial-3.0.xml"; sourceTree = SOURCE_ROOT; };
 		F6C1B81E25C432CE001B30ED /* pugi_serializer_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pugi_serializer_tests; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestSerializeBaseTypes.cpp; sourceTree = SOURCE_ROOT; };
-		F6C1B82825C43406001B30ED /* googletest */ = {isa = PBXFileReference; lastKnownFileType = folder; name = googletest; path = ../../../../../../../../Users/shai/Desktop/googletest; sourceTree = "<group>"; };
-		F6C1B82925C436C8001B30ED /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = ../../../../../../../../Users/shai/Desktop/googletest/build/lib/libgtest.a; sourceTree = "<group>"; };
-		F6C1B82B25C43829001B30ED /* pugi_serializer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugi_serializer.hpp; path = ../src/pugi_serializer.hpp; sourceTree = SOURCE_ROOT; };
-		F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugi_serializer.cpp; path = ../src/pugi_serializer.cpp; sourceTree = SOURCE_ROOT; };
-		F6C1B82E25C43840001B30ED /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pugixml.cpp; path = ../../pugixml/src/pugixml.cpp; sourceTree = SOURCE_ROOT; };
-		F6C1B82F25C43840001B30ED /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../../pugixml/src/pugixml.hpp; sourceTree = SOURCE_ROOT; };
-		F6C1B83125C43D0C001B30ED /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = ../../../../../../../../Users/shai/Desktop/googletest/build/lib/libgtest_main.a; sourceTree = "<group>"; };
+		F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; name = TestSerializeBaseTypes.cpp; path = tests/TestSerializeBaseTypes.cpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82B25C43829001B30ED /* pugi_serializer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugi_serializer.hpp; path = src/pugi_serializer.hpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = pugi_serializer.cpp; path = src/pugi_serializer.cpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82E25C43840001B30ED /* pugixml.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = pugixml.cpp; path = ../pugixml/src/pugixml.cpp; sourceTree = SOURCE_ROOT; };
+		F6C1B82F25C43840001B30ED /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = pugixml.hpp; path = ../pugixml/src/pugixml.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,31 +54,45 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6C1B83225C43D0C001B30ED /* libgtest_main.a in Frameworks */,
-				F6C1B82A25C436C8001B30ED /* libgtest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F6C1B81525C432CE001B30ED = {
+		F6154E6A2CDCE1EA00C0D783 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				F69D1C572656C3A7007FC058 /* mondial-3.0.xml */,
 				F69D1C532656C2C2007FC058 /* TestBigFile.cpp */,
 				F69D1C4F2656BB02007FC058 /* TestConstruction.cpp */,
 				F692398C263C4EB600A84122 /* TestProperties.cpp */,
 				F691412E25CD3EE70067247D /* ExamplesWithTests.cpp */,
 				F6547B1B25C8A652000625A5 /* TestSerializeDefaults.cpp */,
 				F6C1B82125C432CE001B30ED /* TestSerializeBaseTypes.cpp */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		F6154E6C2CDCE20E00C0D783 /* googletest */ = {
+			isa = PBXGroup;
+			children = (
+				F6154E6D2CDCE22E00C0D783 /* gtest_main.cc */,
+				F6154E6F2CDCE22E00C0D783 /* gtest-all.cc */,
+				F6154E6E2CDCE22E00C0D783 /* gtest.h */,
+			);
+			name = googletest;
+			sourceTree = "<group>";
+		};
+		F6C1B81525C432CE001B30ED = {
+			isa = PBXGroup;
+			children = (
+				F69D1C572656C3A7007FC058 /* mondial-3.0.xml */,
 				F6C1B82E25C43840001B30ED /* pugixml.cpp */,
 				F6C1B82F25C43840001B30ED /* pugixml.hpp */,
 				F6C1B82C25C43829001B30ED /* pugi_serializer.cpp */,
 				F6C1B82B25C43829001B30ED /* pugi_serializer.hpp */,
-				F6C1B82925C436C8001B30ED /* libgtest.a */,
-				F6C1B83125C43D0C001B30ED /* libgtest_main.a */,
-				F6C1B82825C43406001B30ED /* googletest */,
+				F6154E6A2CDCE1EA00C0D783 /* Tests */,
+				F6154E6C2CDCE20E00C0D783 /* googletest */,
 				F6C1B81F25C432CE001B30ED /* Products */,
 			);
 			sourceTree = "<group>";
@@ -152,6 +166,8 @@
 				F69D1C552656C2C2007FC058 /* TestBigFile.cpp in Sources */,
 				F6C1B82D25C43829001B30ED /* pugi_serializer.cpp in Sources */,
 				F692398D263C4EB600A84122 /* TestProperties.cpp in Sources */,
+				F6154E712CDCE22E00C0D783 /* gtest-all.cc in Sources */,
+				F6154E702CDCE22E00C0D783 /* gtest_main.cc in Sources */,
 				F691412F25CD3EE70067247D /* ExamplesWithTests.cpp in Sources */,
 				F6547B1C25C8A652000625A5 /* TestSerializeDefaults.cpp in Sources */,
 				F6C1B82225C432CE001B30ED /* TestSerializeBaseTypes.cpp in Sources */,
@@ -167,7 +183,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -212,13 +228,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Code/googletest/include;
-				LIBRARY_SEARCH_PATHS = "/Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Products/1.0/Mac/$(CONFIGURATION)";
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../googletest/googletest/include",
+					"$(PROJECT_DIR)/../googletest/googletest",
+				);
 			};
 			name = Debug;
 		};
@@ -228,7 +248,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -267,13 +287,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Code/googletest/include;
-				LIBRARY_SEARCH_PATHS = "/Volumes/p4client/ProAudio/SDKs/googletest/1.10.0/Products/1.0/Mac/$(CONFIGURATION)";
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../googletest/googletest/include",
+					"$(PROJECT_DIR)/../googletest/googletest",
+				);
 			};
 			name = Release;
 		};
@@ -281,7 +305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -290,7 +314,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

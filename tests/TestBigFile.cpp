@@ -1,22 +1,42 @@
 #include <iostream>
 
+#include <string>
+#include <string_view>
+#include <compare>
+#include <filesystem>
+
 #include "gtest/gtest.h"
 #include "pugi_serializer.hpp"
 
-#if (__cplusplus == 202002L)  // c++20
-    auto operator<=>(const std::string& lhs, const std::string& rhs)
-    {
-        // apple clang! not support for std::string::operator<=> (8-<)
-    }
-#endif
+auto operator<=>(const std::string& lhs, const std::string& rhs)
+{
+    // apple clang 21.6.0: no support for std::string::operator<=> (8-<)
+    int comp_res = lhs.compare(rhs);
+    if (0 > comp_res) return std::strong_ordering::less;
+    else if (0 < comp_res) return std::strong_ordering::greater;
+    else return std::strong_ordering::equal;
+}
 
+static void banana()
+{
+    std::string b1{"banana"};
+    std::string b2{"rama"};
+    if (auto cmp = b1 <=> b2; cmp == std::strong_ordering::equal)
+    {
+        std::cout << b1 << " is equal to " << b2 << std::endl;
+    }
+    else
+    {
+        std::cout << b1 << " is different from " << b2 << std::endl;
+    }
+}
 
 class encompassed : public pugi_serializer::serialized_base
 {
 public:
-#if (__cplusplus == 202002L)  // c++20
     friend auto operator<=>(const encompassed&, const encompassed&) = default;
-#endif
+    friend bool operator==(const encompassed&, const encompassed&) = default;
+
     std::string continent;
     float percentage;
     void serialize(pugi_serializer::serializer_base& ser) override
@@ -210,9 +230,8 @@ public:
 class organization : entity
 {
 public:
-#if (__cplusplus == 202002L)  // c++20
     friend auto operator<=>(const organization&, const organization&) = default;
-#endif
+
     std::string abbrev;
     std::string established;
     std::string headq;
@@ -369,9 +388,7 @@ public:
 class world : public pugi_serializer::serialized_base
 {
 public:
-#if (__cplusplus == 202002L)  // c++20
     friend auto operator<=>(const world&, const world&) = default;
-#endif
 
     std::vector<continent> continent_vec;
     std::vector<country> country_vec;
@@ -398,9 +415,9 @@ public:
     }
 };
 
-const char* big_file_name = "mondial-3.0.xml";
-const char* big_file_out_name = "mondial-3.0.out.xml";
-const char* big_file_ref_name = "mondial-3.0.ref.xml";
+const char* big_file_name = "tests/mondial-3.0.xml";
+const char* big_file_out_name = "tests/mondial-3.0.out.xml";
+const char* big_file_ref_name = "tests/mondial-3.0.ref.xml";
 
 TEST(TestBigFile, read)
 {

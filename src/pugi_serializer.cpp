@@ -18,7 +18,17 @@
 
 namespace pugi_serializer
 {
-    
+std::strong_ordering operator<=>(const pugi_serializer::serialized_base&,
+                                 const pugi_serializer::serialized_base&)
+{
+    return std::strong_ordering::equal; // all serialized_base object are the same
+}
+bool operator==(const pugi_serializer::serialized_base&,
+                const pugi_serializer::serialized_base&)
+{
+    return true;
+}
+
 namespace impl
 {
 
